@@ -3,6 +3,7 @@ using System.Collections;
 using System.IO;
 using System.Collections.Generic;
 using UnityEngine.UI; // Required when Using UI elements.
+using UnityEngine.SceneManagement;
 
 public class CharacterController : MonoBehaviour {
 
@@ -22,8 +23,9 @@ public class CharacterController : MonoBehaviour {
     private float timer = 0.0f;
 
     // Health
-    public int health;
-    public Canvas healthBar;
+    public float health;
+    private float maxHealth;
+    public Image healthBar;
 
     //firing
     public float projectileSpeed = 100.0f;
@@ -39,18 +41,29 @@ public class CharacterController : MonoBehaviour {
     private Vector2 leftJoystick = Vector2.zero;
     private Vector2 rightJoystick = Vector2.zero;
 
+    private bool gameOver;
+
     // Use this for initialization
     void Start () {
         currentWords = new List<Word>();
         charging = false;
         chargeBar.enabled = false;
+        maxHealth = health;
+        gameOver = false;
+
     }
 	
 	// Update is called once per frame
 	void Update () {
-        Move();
-        Look();
-        Fire();
+        if (gameOver)
+        {
+            Invoke("LoadMenu", 5);
+        } else
+        {
+            Move();
+            Look();
+            Fire();
+        }
     }
 
     private void Move() {
@@ -190,19 +203,23 @@ public class CharacterController : MonoBehaviour {
         projectile.transform.localScale = projectile.transform.localScale * letterScaleInitial;
     }
 
-    public void Damage(int damage) {
+    public void Damage(float damage) {
         health -= damage;
+
+        Debug.Log(health);
+
+        healthBar.fillAmount = health / maxHealth;
 
         if (health <= 0) {
             //other player wins!
-            Destroy(gameObject);
+            //Destroy(gameObject);
 
-            Invoke("CreatePlayer", 2.0f);
+            gameOver = true;
         }
     }
 
-    void CreatePlayer()
+    private void LoadMenu()
     {
-        Debug.Log("YOO");
+        SceneManager.LoadScene(0);
     }
 }
