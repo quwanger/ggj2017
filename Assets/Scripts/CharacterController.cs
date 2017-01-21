@@ -6,6 +6,8 @@ using System.Collections.Generic;
 public class CharacterController : MonoBehaviour {
 
     public int playerIndex;
+    public int teamIndex;
+
     public float moveSpeed = 100;
     public int health = 1;
     public GameObject head;
@@ -16,13 +18,13 @@ public class CharacterController : MonoBehaviour {
     //firing
     bool charging = false;
     public float projectileSpeed = 100.0f;
+
+    public float letterDistanceFromPlayer = 3.0f;
+    public float letterAngleOfSeperation = 10.0f;
+    public float letterScaleInitial = 1.0f;
+
     public List<Word> currentWords;
-
-    private Vector3 lastPosition;
-    private Vector3 deltaPosition;
-    private Vector3 lastRotation;
-    private Vector3 deltaRotation;
-
+    public int maximumAvailableWords = 3;
 
     // Use this for initialization
     void Start () {
@@ -31,15 +33,9 @@ public class CharacterController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        deltaPosition = transform.position - lastPosition;
-        deltaRotation = transform.rotation.eulerAngles - lastRotation;
-
         Move();
         Look();
         Fire();
-
-        lastPosition = transform.position;
-        lastRotation = transform.rotation.eulerAngles;
     }
 
     private void Move() {
@@ -64,11 +60,11 @@ public class CharacterController : MonoBehaviour {
     void Fire()
     {
         //Debug.Log(Input.GetAxis(("Player" + playerIndex + "Fire1")));
-        if (Input.GetAxis("Player"+playerIndex+"Fire1") != 0.0f && !charging)
+        if (currentWords.Count <= maximumAvailableWords && Input.GetAxis("Player"+playerIndex+"Fire1") != 0.0f && !charging)
         {
             charging = true;
             GetComponent<Animator>().SetTrigger("Firing");
-            ChargeWord("ASSHOLES");
+            CreateWord(PickRandomWord(1));
         } else if(Input.GetAxis("Player"+playerIndex+"Fire1") == 0 && charging)
         {
             currentWords[currentWords.Count - 1].Fire(projectileSpeed);
@@ -85,32 +81,48 @@ public class CharacterController : MonoBehaviour {
         }
     }
 
-    public float letterDistanceFromPlayer = 3.0f;
-    public float letterAngleOfSeperation = 10.0f;
-    public float letterScaleInitial = 1.0f;
+    public string PickRandomWord(int chargeLevel) {
+        int numOfAvailableWords;
+        try {
+            switch (chargeLevel) {
+                case 1:
+                    numOfAvailableWords = System.Enum.GetNames(typeof(EnglishWords.ShortWords)).Length;
+                    return ((EnglishWords.ShortWords)Random.Range(0, numOfAvailableWords)).ToString().ToUpper();
+                case 2:
+                    numOfAvailableWords = System.Enum.GetNames(typeof(EnglishWords.MediumWords)).Length;
+                    return ((EnglishWords.MediumWords)Random.Range(0, numOfAvailableWords)).ToString().ToUpper();
+                case 3:
+                    numOfAvailableWords = System.Enum.GetNames(typeof(EnglishWords.LongWords)).Length;
+                    return ((EnglishWords.LongWords)Random.Range(0, numOfAvailableWords)).ToString().ToUpper();
+            }
+        } catch {
+            return "Sorry!";
+        }
+        return "Sorry!";
+    }
 
-    private void ChargeWord(string word) {
+    private void CreateWord(string word) {
         char[] letters = word.ToCharArray();
-        Word currentWord = new Word(word);
+        GameObject obj = (GameObject)Instantiate(new GameObject(), transform);
+        Word currentWord = obj.AddComponent<Word>();
+        currentWord.owner = this;
+        currentWord.word = word;
         currentWords.Add(currentWord);
 
         int count = 0;
 
         foreach (char letter in letters) {
             LetterProjectile projectile = (LetterProjectile)Instantiate(Resources.Load<LetterProjectile>("Letter Projectile"), head.transform.position, Quaternion.identity);
-            projectile.transform.SetParent(transform);
+            //projectile.transform.SetParent(transform);
+            projectile.word = currentWord;
             //text
             projectile.text.text = letter.ToString();
 
             UpdateLetterTransform(projectile, count, word);
-
-            //float letterSpacing = 1.0f;
-            //float wordLength = letterSpacing * word.Length;
-            //float halfWordLength = wordLength * 0.5f;
-            //projectile.transform.position = projectile.transform.position - projectile.transform.right * halfWordLength + projectile.transform.right * letterSpacing * count;
-
+            
             projectile.GetComponent<Collider2D>().enabled = false;
             currentWord.letters.Add(projectile);
+            Debug.Log("ADDED " + letter + " TO " + word);
             count++;
         }
     }

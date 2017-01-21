@@ -4,9 +4,11 @@ using UnityEngine.UI;
 
 public class LetterProjectile : MonoBehaviour {
 
+    public Word word;
     public Text text;
     public int damage = 1;
 
+    public bool active = false;
     public float life = 0.0f;
     public float timeout = 5.0f;
 
@@ -14,13 +16,16 @@ public class LetterProjectile : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+	    
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        life += Time.deltaTime;
+        if(active) {
+            life += Time.deltaTime;
+        }
         if(life >= timeout || bounces <= 0) {
+            word.letters.Remove(this);
             Destroy(gameObject);
         }
 	}
