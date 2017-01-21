@@ -103,7 +103,7 @@ public class CharacterController : MonoBehaviour {
 
     private void CreateWord(string word) {
         char[] letters = word.ToCharArray();
-        GameObject obj = (GameObject)Instantiate(new GameObject(), transform);
+        GameObject obj = (GameObject)Instantiate(new GameObject());
         Word currentWord = obj.AddComponent<Word>();
         currentWord.owner = this;
         currentWord.word = word;
