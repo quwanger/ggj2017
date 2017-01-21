@@ -9,13 +9,9 @@ public class CharacterController : MonoBehaviour {
     private Vector2 leftJoystick = Vector2.zero;
     private Vector2 rightJoystick = Vector2.zero;
 
-    //camera
-    public Camera playerCamera;
-    public float cameraMoveSpeed;
-
     // Use this for initialization
     void Start () {
-        playerCamera = FindObjectOfType<Camera>();
+
 	}
 	
 	// Update is called once per frame
@@ -39,5 +35,24 @@ public class CharacterController : MonoBehaviour {
         diff.Normalize();
         float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0f, 0f, rot_z + 90);
+
+        Fire();
+	}
+
+    void Fire()
+    {
+        bool charging = false;
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            charging = true;
+
+            GetComponent<Animator>().SetTrigger("Firing");
+        } else
+        {
+            charging = false;
+
+            //GetComponent<Animator>().ResetTrigger("Firing");
+        }
     }
 }
