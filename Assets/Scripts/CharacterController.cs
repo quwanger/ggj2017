@@ -7,6 +7,7 @@ public class CharacterController : MonoBehaviour {
     public int playerIndex;
     public float moveSpeed = 100;
     public int health = 1;
+    public GameObject head;
 
     private Vector2 leftJoystick = Vector2.zero;
     private Vector2 rightJoystick = Vector2.zero;
@@ -37,9 +38,9 @@ public class CharacterController : MonoBehaviour {
         Vector3 diff = transform.position + new Vector3(rightJoystick.x, rightJoystick.y, 0) - transform.position;
         diff.Normalize();
         float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0f, 0f, rot_z + 90);
+        head.transform.rotation = Quaternion.Euler(0f, 0f, rot_z + 90);
 
-        Debug.DrawRay(transform.position, transform.up * -10, Color.red);
+        Debug.DrawRay(head.transform.position, transform.up * -10, Color.red);
 	}
 
     bool charging = false;
@@ -47,11 +48,12 @@ public class CharacterController : MonoBehaviour {
 
     void Fire()
     {
-        if (Input.GetButton("Player"+playerIndex+"Fire1"))
+        Debug.Log(Input.GetAxis(("Player" + playerIndex + "Fire1")));
+        if (Input.GetAxis("Player"+playerIndex+"Fire1") != 0.0f && !charging)
         {
             charging = true;
             GetComponent<Animator>().SetTrigger("Firing");
-        } else if(Input.GetButtonUp("Player"+playerIndex+"Fire1"))
+        } else if(Input.GetAxis("Player"+playerIndex+"Fire1") == 0 && charging)
         {
             SpawnProjectile("F");
             charging = false;
@@ -60,12 +62,12 @@ public class CharacterController : MonoBehaviour {
     }
 
     private void SpawnProjectile(string text) {
-        Projectile projectile = (Projectile)Instantiate(Resources.Load<Projectile>("Letter Projectile"), transform.position + transform.up * -1.5f, Quaternion.identity);
+        Projectile projectile = (Projectile)Instantiate(Resources.Load<Projectile>("Letter Projectile"), head.transform.position + head.transform.up * -1.5f, Quaternion.identity);
         projectile.text.text = text;
-        Vector3 diff = transform.up * -1;
+        Vector3 diff = head.transform.up * -1;
         float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
         projectile.transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
-        projectile.GetComponent<Rigidbody2D>().AddForce(transform.up * -projectileSpeed);
+        projectile.GetComponent<Rigidbody2D>().AddForce(head.transform.up * -projectileSpeed);
     }
 
     public void Damage(int damage) {
