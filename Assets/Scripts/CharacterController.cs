@@ -37,5 +37,26 @@ public class CharacterController : MonoBehaviour {
             float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0f, 0f, rot_z + 90);
         }
+
+        Fire();
 	}
+
+    void Fire()
+    {
+        bool charging = false;
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            charging = true;
+
+            GetComponent<Animator>().SetTrigger("Firing");
+        } else
+        {
+            charging = false;
+
+            //GetComponent<Animator>().ResetTrigger("Firing");
+        }
+
+        Debug.Log(charging);
+    }
 }
