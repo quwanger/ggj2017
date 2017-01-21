@@ -3,14 +3,11 @@ using System.Collections;
 
 public class CharacterController : MonoBehaviour {
 
-    public float moveSpeed = 1;
-    public Vector2 maxVelocity;
+    public int playerIndex;
+    public float moveSpeed = 100;
 
-    public float deadzoneX = 0.01f;
-    public float deadzoneY = 0.01f;
-
-    private float joyX = 0.0f;
-    private float joyY = 0.0f;
+    private Vector2 leftJoystick = Vector2.zero;
+    private Vector2 rightJoystick = Vector2.zero;
 
     //camera
     public Camera playerCamera;
@@ -23,29 +20,24 @@ public class CharacterController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        joyX = Input.GetAxisRaw("Horizontal");
-        joyY = Input.GetAxis("Vertical");
-        //Debug.Log("Horizontal Input: " + joyX);
-        //Debug.Log("Vertical Input: " + joyY);
-
-        if (Mathf.Abs(joyX) > deadzoneX && GetComponent<Rigidbody2D>().velocity.x < maxVelocity.x) {
-            GetComponent<Rigidbody2D>().AddForce(new Vector2(moveSpeed * joyX, 0.0f));
-        } if(Mathf.Abs(joyY) > deadzoneY && GetComponent<Rigidbody2D>().velocity.y < maxVelocity.y) {
-            GetComponent<Rigidbody2D>().AddForce(new Vector2(0.0f, moveSpeed * joyY));
-        }
-
-
-        Vector3 diff = transform.position + new Vector3(joyX, joyY, 0) - transform.position;
-        diff.Normalize();
-        if(diff.magnitude > 0.01f) {
-            float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0f, 0f, rot_z + 90);
-        }
-
-        float camDistance = Vector2.Distance(transform.position, playerCamera.transform.position);
-        if ( camDistance > 0.1f) {
-            Vector2 targetCamDirection = transform.position - playerCamera.transform.position;
-            playerCamera.GetComponent<Rigidbody2D>().AddForce(targetCamDirection.normalized * cameraMoveSpeed * camDistance);
-        }
+        Move();
+        Look();
 	}
+
+    private void Move() {
+        leftJoystick.x = Input.GetAxisRaw("Player"+playerIndex+"MoveX");
+        leftJoystick.y = Input.GetAxis("Player"+playerIndex+"MoveY");
+
+        GetComponent<Rigidbody2D>().AddForce(new Vector2(moveSpeed * leftJoystick.x, 0.0f));
+        GetComponent<Rigidbody2D>().AddForce(new Vector2(0.0f, moveSpeed * -leftJoystick.y));
+    }
+
+    private void Look() {
+        rightJoystick.x = Input.GetAxisRaw("Player" + playerIndex + "LookX");
+        rightJoystick.y = -Input.GetAxis("Player" + playerIndex + "LookY");
+        Vector3 diff = transform.position + new Vector3(rightJoystick.x, rightJoystick.y, 0) - transform.position;
+        diff.Normalize();
+        float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0f, 0f, rot_z + 90);
+    }
 }
