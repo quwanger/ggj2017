@@ -8,13 +8,16 @@ public class CharacterController : MonoBehaviour {
     public float moveSpeed = 100;
     public int health = 1;
     public GameObject head;
+    public ParticleSystem charge;
 
     private Vector2 leftJoystick = Vector2.zero;
     private Vector2 rightJoystick = Vector2.zero;
 
+    private float timer = 0.0f;
+
     // Use this for initialization
     void Start () {
-
+        charge.emissionRate = 0.0f;
 	}
 	
 	// Update is called once per frame
@@ -48,16 +51,27 @@ public class CharacterController : MonoBehaviour {
 
     void Fire()
     {
-        Debug.Log(Input.GetAxis(("Player" + playerIndex + "Fire1")));
-        if (Input.GetAxis("Player"+playerIndex+"Fire1") != 0.0f && !charging)
+        if (Input.GetAxis("Player"+playerIndex+"Fire1") != 0.0f)
         {
             charging = true;
-            GetComponent<Animator>().SetTrigger("Firing");
+
+            timer += Time.deltaTime;
+            Debug.Log(timer);
+
+            charge.enableEmission = true;
+            charge.emissionRate = timer * 10.0f;
+
+
         } else if(Input.GetAxis("Player"+playerIndex+"Fire1") == 0 && charging)
         {
             SpawnProjectile("F");
             charging = false;
-            //GetComponent<Animator>().ResetTrigger("Firing");
+
+            timer = 0.0f;
+
+            //charge.Clear();
+            charge.enableEmission = false;
+            charge.emissionRate = 0.0f;
         }
     }
 
