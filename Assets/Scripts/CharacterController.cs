@@ -12,13 +12,9 @@ public class CharacterController : MonoBehaviour {
     private float joyX = 0.0f;
     private float joyY = 0.0f;
 
-    //camera
-    public Camera playerCamera;
-    public float cameraMoveSpeed;
-
     // Use this for initialization
     void Start () {
-        playerCamera = FindObjectOfType<Camera>();
+
 	}
 	
 	// Update is called once per frame
@@ -40,12 +36,6 @@ public class CharacterController : MonoBehaviour {
         if(diff.magnitude > 0.01f) {
             float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0f, 0f, rot_z + 90);
-        }
-
-        float camDistance = Vector2.Distance(transform.position, playerCamera.transform.position);
-        if ( camDistance > 0.1f) {
-            Vector2 targetCamDirection = transform.position - playerCamera.transform.position;
-            playerCamera.GetComponent<Rigidbody2D>().AddForce(targetCamDirection.normalized * cameraMoveSpeed * camDistance);
         }
 	}
 }
