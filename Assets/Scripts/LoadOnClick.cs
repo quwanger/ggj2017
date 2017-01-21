@@ -1,12 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class LoadOnClick : MonoBehaviour {
     public GameObject loadingImage;
 
-    public void LoadScene(int level) {
+    public void Update() {
+        if (Input.GetButton("Player1Back")) {
+            loadingImage.SetActive(true);
+            SceneManager.LoadScene(0);
+        }
+    }
+
+
+    public void LoadScene(int scene) {
         loadingImage.SetActive(true);
-        Application.LoadLevel(level);
+        SceneManager.LoadScene(scene);
     }
 
     public void QuitGame() {

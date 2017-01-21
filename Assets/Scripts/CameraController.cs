@@ -23,8 +23,20 @@ public class CameraController : MonoBehaviour {
             GetComponent<Rigidbody2D>().AddForce(targetCamDirection.normalized * cameraMoveSpeed * camDistance);
         }*/
 
-        SetCameraPosition();
-        SetCameraSize();
+        if (player01 && player02)
+        {
+            SetCameraPosition();
+            SetCameraSize();
+        } else
+        {
+            float camDistance = Vector2.Distance(player01.transform.position, transform.position);
+
+            if (camDistance > 0.1f)
+            {
+                Vector2 targetCamDirection = player01.transform.position - transform.position;
+                GetComponent<Rigidbody2D>().AddForce(targetCamDirection.normalized * cameraMoveSpeed * camDistance);
+            }
+        }
     }
 
     void SetCameraPosition ()
@@ -42,6 +54,6 @@ public class CameraController : MonoBehaviour {
         float distanceY = Mathf.Abs(player01.transform.position.y - player02.transform.position.y) * 0.5f;
 
         float camSizeX = Mathf.Max(distanceX, minSizeX);
-        gameCamera.orthographicSize = Mathf.Max(distanceY, camSizeX * Screen.height / Screen.width, minSizeY) + 0.5f;
+        gameCamera.orthographicSize = Mathf.Max(distanceY, camSizeX * Screen.height / Screen.width, minSizeY) + 4.0f;
     }
 }

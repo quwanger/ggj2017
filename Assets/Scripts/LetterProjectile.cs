@@ -6,7 +6,7 @@ public class LetterProjectile : MonoBehaviour {
 
     public Word word;
     public Text text;
-    public int damage = 1;
+    public float damage = 1;
 
     public bool active = false;
     public float life = 0.0f;
