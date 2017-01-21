@@ -10,7 +10,6 @@ public class CharacterController : MonoBehaviour {
     public int teamIndex;
 
     public float moveSpeed = 100;
-    public int health = 1;
     public GameObject head;
 
     // Charging
@@ -21,6 +20,10 @@ public class CharacterController : MonoBehaviour {
     public Transform headBottom;
     public float mouthAngle;
     private float timer = 0.0f;
+
+    // Health
+    public int health;
+    public Canvas healthBar;
 
     //firing
     public float projectileSpeed = 100.0f;
@@ -72,7 +75,7 @@ public class CharacterController : MonoBehaviour {
     void Fire()
     {
         //Debug.Log(Input.GetAxis(("Player" + playerIndex + "Fire1")));
-        if (currentWords.Count <= maximumAvailableWords && Input.GetAxis("Player" + playerIndex + "Fire1") != 0.0f)
+        if (currentWords.Count < maximumAvailableWords && Input.GetAxis("Player" + playerIndex + "Fire1") != 0.0f)
         {
             if (!charging)
             {
@@ -83,7 +86,7 @@ public class CharacterController : MonoBehaviour {
             timer += Time.deltaTime;
             float chargeAmount = Mathf.Clamp(timer / chargeSpeed, 0.0f, 1.0f);
 
-            Debug.Log(chargeAmount * mouthAngle);
+           // Debug.Log(chargeAmount * mouthAngle);
 
             float topAngle = Mathf.Clamp(chargeAmount * mouthAngle, 0.0f, 40.0f);
             float bottomAngle = Mathf.Clamp(chargeAmount * mouthAngle, 0.0f, 40.0f);
@@ -148,6 +151,7 @@ public class CharacterController : MonoBehaviour {
     private void CreateWord(string word) {
         char[] letters = word.ToCharArray();
         GameObject obj = (GameObject)Instantiate(new GameObject());
+
         Word currentWord = obj.AddComponent<Word>();
         currentWord.owner = this;
         currentWord.word = word;
@@ -157,6 +161,7 @@ public class CharacterController : MonoBehaviour {
 
         foreach (char letter in letters) {
             LetterProjectile projectile = (LetterProjectile)Instantiate(Resources.Load<LetterProjectile>("Letter Projectile"), head.transform.position, Quaternion.identity);
+
             //projectile.transform.SetParent(transform);
             projectile.word = currentWord;
             //text
@@ -166,7 +171,7 @@ public class CharacterController : MonoBehaviour {
             
             projectile.GetComponent<Collider2D>().enabled = false;
             currentWord.letters.Add(projectile);
-            Debug.Log("ADDED " + letter + " TO " + word);
+            //Debug.Log("ADDED " + letter + " TO " + word);
             count++;
         }
     }
@@ -187,9 +192,17 @@ public class CharacterController : MonoBehaviour {
 
     public void Damage(int damage) {
         health -= damage;
+
         if (health <= 0) {
             //other player wins!
-            //Destroy(gameObject);
+            Destroy(gameObject);
+
+            Invoke("CreatePlayer", 2.0f);
         }
+    }
+
+    void CreatePlayer()
+    {
+        Debug.Log("YOO");
     }
 }
