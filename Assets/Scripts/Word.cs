@@ -29,7 +29,14 @@ public class Word : MonoBehaviour {
             letter.transform.parent = null;
             letter.transform.position = pos;
             letter.active = true;
-            Debug.Log(letter.active);
+        }
+    }
+
+    public void DestroyLetters() {
+        for(int i = letters.Count-1; i >= 0; i--) {
+            LetterProjectile letter = letters[i];
+            letters.RemoveAt(i);
+            Destroy(letter.gameObject);
         }
     }
 }

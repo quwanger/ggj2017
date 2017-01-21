@@ -13,5 +13,5 @@ public static class EnglishWords {
 public static class FrenchWords {
     public enum ShortWords { Criss, Merde, Esti }
     public enum MediumWords { Ta_Gueule, Maudit, Calisse, Va_Chier }
-    public enum LongWords { Esti_DTapette_de_Calisse, Tabarnak }
+    public enum LongWords { Tabarnak }
 }

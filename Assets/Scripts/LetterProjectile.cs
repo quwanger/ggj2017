@@ -16,7 +16,11 @@ public class LetterProjectile : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	    
+	    if(word.owner.teamIndex == 0) {
+            text.color = Color.red;
+        } else if(word.owner.teamIndex == 1) {
+            text.color = Color.blue;
+        }
 	}
 	
 	// Update is called once per frame
@@ -35,7 +39,6 @@ public class LetterProjectile : MonoBehaviour {
         
         CharacterController cc = collision.collider.GetComponent<CharacterController>();
         if(cc != null) {
-            Debug.Log("hit a player!");
             cc.Damage(damage);
         }
 
