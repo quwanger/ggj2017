@@ -6,7 +6,7 @@ public class LetterProjectile : MonoBehaviour {
 
     public Word word;
     public Text text;
-    public int damage = 1;
+    public float damage = 1;
 
     public bool active = false;
     public float life = 0.0f;
@@ -38,7 +38,7 @@ public class LetterProjectile : MonoBehaviour {
         
         
         CharacterController cc = collision.collider.GetComponent<CharacterController>();
-        if(cc != null) {
+        if(cc != null && cc.teamIndex != word.owner.teamIndex) {
             cc.Damage(damage);
         }
 

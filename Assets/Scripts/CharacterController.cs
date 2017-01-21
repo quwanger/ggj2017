@@ -4,6 +4,7 @@ using System.IO;
 using System.Collections.Generic;
 using UnityEngine.UI; // Required when Using UI elements.
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class CharacterController : MonoBehaviour {
 
@@ -11,7 +12,6 @@ public class CharacterController : MonoBehaviour {
     public int teamIndex;
 
     public float moveSpeed = 100;
-    public int health = 1;
     public GameObject head;
 
     // Charging
@@ -22,10 +22,14 @@ public class CharacterController : MonoBehaviour {
     public Transform headBottom;
     public float mouthAngle;
     private float timer = 0.0f;
-
+    
     public float chargeLevel1;
     public float chargeLevel2;
 
+    // Health
+    public float health;
+    private float maxHealth;
+    public Image healthBar;
 
     //firing
     public float projectileSpeed = 100.0f;
@@ -41,9 +45,11 @@ public class CharacterController : MonoBehaviour {
     // Controls
     private Vector2 leftJoystick = Vector2.zero;
     private Vector2 rightJoystick = Vector2.zero;
-
+    
     //text & fonts
     List<Font> fonts;
+
+    private bool gameOver;
 
     // Use this for initialization
     void Start () {
@@ -55,13 +61,23 @@ public class CharacterController : MonoBehaviour {
         fonts.Add(Resources.Load<Font>(Path.Combine("Fonts", "murkybuzzDEMO")));
         fonts.Add(Resources.Load<Font>(Path.Combine("Fonts", "deathrattlebb_reg")));
         fonts.Add(Resources.Load<Font>(Path.Combine("Fonts", "Devastated")));
+        
+        maxHealth = health;
+        gameOver = false;
+        
     }
 	
 	// Update is called once per frame
 	void Update () {
-        Move();
-        Look();
-        Fire();
+        if (gameOver)
+        {
+            Invoke("LoadMenu", 5);
+        } else
+        {
+            Move();
+            Look();
+            Fire();
+        }
     }
 
     private void Move() {
@@ -93,7 +109,7 @@ public class CharacterController : MonoBehaviour {
         {
             timer += Time.deltaTime;
             float chargeAmount = Mathf.Clamp(timer / chargeSpeed, 0.0f, 1.0f);
-
+            
             if (!charging) {
                 CreateWord(PickRandomWord((int)(chargeAmount * 2.0f) + 1));
             } else if (chargeAmount >= chargeLevel1 && !level1Reached) {
@@ -224,6 +240,7 @@ public class CharacterController : MonoBehaviour {
     private void CreateWord(string word) {
         char[] letters = word.ToCharArray();
         GameObject obj = (GameObject)Instantiate(new GameObject());
+
         Word currentWord = obj.AddComponent<Word>();
         currentWord.owner = this;
         currentWord.word = word;
@@ -233,6 +250,7 @@ public class CharacterController : MonoBehaviour {
 
         foreach (char letter in letters) {
             LetterProjectile projectile = (LetterProjectile)Instantiate(Resources.Load<LetterProjectile>("Letter Projectile"), head.transform.position, Quaternion.identity);
+
             //projectile.transform.SetParent(transform);
             projectile.word = currentWord;
             //text
@@ -242,6 +260,7 @@ public class CharacterController : MonoBehaviour {
             
             projectile.GetComponent<Collider2D>().enabled = false;
             currentWord.letters.Add(projectile);
+
             count++;
         }
     }
@@ -260,11 +279,23 @@ public class CharacterController : MonoBehaviour {
         projectile.transform.localScale = Vector3.one * 0.01f * letterScaleTarget;
     }
 
-    public void Damage(int damage) {
+    public void Damage(float damage) {
         health -= damage;
+
+        Debug.Log(health);
+
+        healthBar.fillAmount = health / maxHealth;
+
         if (health <= 0) {
             //other player wins!
             //Destroy(gameObject);
+
+            gameOver = true;
         }
+    }
+
+    private void LoadMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 }
