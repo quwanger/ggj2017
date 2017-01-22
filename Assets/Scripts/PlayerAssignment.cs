@@ -15,7 +15,7 @@ public class PlayerAssignment : MonoBehaviour {
     public int player1Index;
     public int player2Index;
     private float timer;
-    private bool timerSet;
+    private float timerSet;
 
     public PlayerIndexes playerIndexes;
 
@@ -24,18 +24,25 @@ public class PlayerAssignment : MonoBehaviour {
         player1Index = 0;
         player2Index = 0;
         timer = 3.0f;
-        timerSet = false;
+        timerSet = 0;
     }
 
 	public void Update() {
-        if (timerSet)
+        if (timerSet > 0)
         {
-            timer -= Time.deltaTime;
-            if (timer < 0)
+            timerSet += Time.deltaTime;
+  
+            if (timerSet > 3.0f)
             {
-                Debug.Log("timer at zero");
+                timer -= Time.deltaTime;
                 loadingImage.SetActive(true);
-                SceneManager.LoadScene(3);
+
+                if (timer < 0)
+                {
+                    Debug.Log("timer at zero");
+
+                    SceneManager.LoadScene(3);
+                }
             }
         }
         
@@ -86,7 +93,7 @@ public class PlayerAssignment : MonoBehaviour {
             playerIndexes.player1Index = player1Index;
             playerIndexes.player2Index = player2Index;
 
-            timerSet = true;
+            timerSet += Time.deltaTime;
             Debug.Log("Timer Set");                           
         }
 	}
