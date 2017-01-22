@@ -382,10 +382,12 @@ public class CharacterController : MonoBehaviour {
 
         if (teamIndex == 0)
         {
+            soundManager.PlaySound("E_Hit");
             heroHit01.enabled = true;
             heroNormal01.enabled = false;
         } else
         {
+            soundManager.PlaySound("F_Hit");
             heroHit02.enabled = true;
             heroNormal02.enabled = false;
         }
@@ -399,6 +401,8 @@ public class CharacterController : MonoBehaviour {
         if (health <= 0) {
             if (this.teamIndex == 0)
             {
+                soundManager.PlaySound("E_Lose");
+                soundManager.PlaySound("F_Win");
                 heroHit01.enabled = false;
                 heroNormal01.enabled = false;
                 heroWin01.enabled = false;
@@ -409,6 +413,8 @@ public class CharacterController : MonoBehaviour {
                 heroLose02.enabled = false;
             } else
             {
+                soundManager.PlaySound("F_Lose");
+                soundManager.PlaySound("E_Win");
                 heroHit01.enabled = false;
                 heroNormal01.enabled = false;
                 heroWin01.enabled = true;

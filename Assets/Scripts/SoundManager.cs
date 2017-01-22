@@ -2,6 +2,8 @@
 using System.Collections;
 
 public class SoundManager : MonoBehaviour {
+    static SoundManager instance = null;
+
     public AudioClip[] criss;
     public AudioClip[] merde;
     public AudioClip[] esti;
@@ -43,7 +45,16 @@ public class SoundManager : MonoBehaviour {
 
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        if (instance != null)
+        {
+            Destroy(gameObject);
+            print("Duplicate music player self-destructing");
+        }
+        else
+        {
+            instance = this;
+            GameObject.DontDestroyOnLoad(gameObject);
+        }
     }
 
     // Use this for initialization
@@ -115,6 +126,24 @@ public class SoundManager : MonoBehaviour {
                 break;
             case "TABARNAK":
                 audio.GetComponent<AudioSource>().PlayOneShot(tabarnak[Random.Range(0, tabarnak.Length)]);
+                break;
+            case "E_Hit":
+                audio.GetComponent<AudioSource>().PlayOneShot(englishHurt[Random.Range(0, englishHurt.Length)]);
+                break;
+            case "F_Hit":
+                audio.GetComponent<AudioSource>().PlayOneShot(frenchHurt[Random.Range(0, frenchHurt.Length)]);
+                break;
+            case "E_Lose":
+                audio.GetComponent<AudioSource>().PlayOneShot(englishDead[Random.Range(0, englishDead.Length)]);
+                break;
+            case "F_Lose":
+                audio.GetComponent<AudioSource>().PlayOneShot(frenchDead[Random.Range(0, frenchDead.Length)]);
+                break;
+            case "E_Win":
+                audio.GetComponent<AudioSource>().PlayOneShot(englishWin[Random.Range(0, englishWin.Length)]);
+                break;
+            case "F_Win":
+                audio.GetComponent<AudioSource>().PlayOneShot(frenchWin[Random.Range(0, frenchWin.Length)]);
                 break;
             default:
                 audio.GetComponent<AudioSource>().PlayOneShot(grunts[Random.Range(0, grunts.Length)]);
