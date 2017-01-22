@@ -49,6 +49,9 @@ public class CharacterController : MonoBehaviour {
     //text & fonts
     List<Font> fonts;
 
+    // Sound
+    public SoundManager soundManager;
+
     private bool gameOver;
 
     // Use this for initialization
@@ -64,7 +67,8 @@ public class CharacterController : MonoBehaviour {
         
         maxHealth = health;
         gameOver = false;
-        
+
+        soundManager = this.GetComponent<SoundManager>();
     }
 	
 	// Update is called once per frame
@@ -141,13 +145,16 @@ public class CharacterController : MonoBehaviour {
 
             chargeBar.enabled = true;
             charge.fillAmount = chargeAmount;
+            charge.color = new Color32(255, 255, 225, 100);
 
             //swap fonts/scale text
             Font targetFont = fonts[0];
             letterScaleTarget = letterScaleInitial + chargeAmount*0.5f;
             if (chargeAmount >= chargeLevel1) {
                 targetFont = fonts[1];
-                
+
+                charge.color = new Color32(255, 180, 65, 100);
+
             }
             if(chargeAmount >= chargeLevel2) {
                 targetFont = fonts[2];
@@ -173,7 +180,7 @@ public class CharacterController : MonoBehaviour {
             charge.fillAmount = 0.0f;
 
             currentWords[currentWords.Count - 1].Fire(projectileSpeed);
-
+            soundManager.PlaySound(currentWords.Last().word);
         }
 
         if (charging)
