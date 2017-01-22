@@ -81,16 +81,8 @@ public class PlayerAssignment : MonoBehaviour {
 		if(player1Index != 0 && player2Index != 0) {
             versus.SetActive(true);
             timerSet = true;
-            Debug.Log("Timer Set");
-            //StartCoroutine(Timeout());                               
+            Debug.Log("Timer Set");                           
         }
 	}
-
-    IEnumerator Timeout()
-    {
-        loadingImage.SetActive(true);
-        yield return new WaitForSeconds(3);
-        SceneManager.LoadScene(3);
-    }
 
 }
