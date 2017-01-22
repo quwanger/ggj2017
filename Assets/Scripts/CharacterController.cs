@@ -212,6 +212,16 @@ public class CharacterController : MonoBehaviour {
 
             charging = true;
 
+            if (teamIndex == 0)
+            {
+                soundManager.PlaySound("E_Charge");
+            } else
+            {
+                soundManager.PlaySound("F_Charge");
+            }
+            
+
+
             float topAngle = Mathf.Clamp(chargeAmount * mouthAngle, 0.0f, 40.0f);
             float bottomAngle = Mathf.Clamp(chargeAmount * mouthAngle, 0.0f, 40.0f);
 
@@ -257,6 +267,7 @@ public class CharacterController : MonoBehaviour {
             charge.fillAmount = 0.0f;
 
             //Debug.Log(currentWords.Last().word);
+            soundManager.GetComponent<AudioSource>().Stop();
             soundManager.PlaySound(currentWords.Last().word);
             currentWords[currentWords.Count - 1].Fire(projectileSpeed * (chargeLevel*0.4f));
             chargeLevel = 0;

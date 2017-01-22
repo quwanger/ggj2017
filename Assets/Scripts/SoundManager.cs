@@ -36,6 +36,9 @@ public class SoundManager : MonoBehaviour {
     public AudioClip[] englishDead;
     public AudioClip[] englishCharge;
 
+    public AudioClip[] englishStart;
+    public AudioClip[] frenchStart;
+
     public AudioClip[] cheers;
     public AudioClip[] collisions;
 
@@ -69,8 +72,6 @@ public class SoundManager : MonoBehaviour {
 
     public void PlaySound(string word)
     {
-        Debug.Log(word);
-
         switch (word)
         {
             case "FUCK":
@@ -144,6 +145,21 @@ public class SoundManager : MonoBehaviour {
                 break;
             case "F_Win":
                 audio.GetComponent<AudioSource>().PlayOneShot(frenchWin[Random.Range(0, frenchWin.Length)]);
+                break;
+            case "collisions":
+                audio.GetComponent<AudioSource>().PlayOneShot(collisions[Random.Range(0, collisions.Length)]);
+                break;
+            case "E_Charge":
+                audio.GetComponent<AudioSource>().PlayOneShot(englishCharge[Random.Range(0, englishCharge.Length)]);
+                break;
+            case "F_Charge":
+                audio.GetComponent<AudioSource>().PlayOneShot(frenchCharge[Random.Range(0, frenchCharge.Length)]);
+                break;
+            case "E_Start":
+                audio.GetComponent<AudioSource>().PlayOneShot(englishCharge[Random.Range(0, englishCharge.Length)]);
+                break;
+            case "F_Start":
+                audio.GetComponent<AudioSource>().PlayOneShot(frenchCharge[Random.Range(0, frenchCharge.Length)]);
                 break;
             default:
                 audio.GetComponent<AudioSource>().PlayOneShot(grunts[Random.Range(0, grunts.Length)]);
