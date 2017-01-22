@@ -6,10 +6,7 @@ public class LoadOnClick : MonoBehaviour {
     public GameObject loadingImage;
 
     public void Update() {
-        if (Input.GetButton("Player1Back")) {
-            loadingImage.SetActive(true);
-            SceneManager.LoadScene(0);
-        }
+        BackToMainMenu();
     }
 
 
@@ -20,5 +17,14 @@ public class LoadOnClick : MonoBehaviour {
 
     public void QuitGame() {
         Application.Quit();
+    }
+
+    public void BackToMainMenu()
+    {
+        if (Input.GetButton("Player1Back"))
+        {
+            loadingImage.SetActive(true);
+            SceneManager.LoadScene(0);
+        }
     }
 }

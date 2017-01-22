@@ -59,6 +59,7 @@ public class CharacterController : MonoBehaviour {
     //text & fonts
     public List<Font> fonts;
 
+
     // Sounds
     private SoundManager soundManager;
 
@@ -422,5 +423,13 @@ public class CharacterController : MonoBehaviour {
     private void LoadMenu()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public void BackToMainMenu()
+    {
+        if (Input.GetButton("Player1Back"))
+        {
+            SceneManager.LoadScene(0);
+        }
     }
 }
