@@ -16,8 +16,13 @@ public class PlayerAssignment : MonoBehaviour {
     public int player2Index;
     private float timer;
     private float timerSet;
+    private float versusTimer;
+
+    bool player01Set;
 
     public PlayerIndexes playerIndexes;
+
+    private SoundManager soundManager;
 
     public void Start() {
         
@@ -25,6 +30,11 @@ public class PlayerAssignment : MonoBehaviour {
         player2Index = 0;
         timer = 3.0f;
         timerSet = 0;
+        versusTimer = 0.0f;
+
+        soundManager = FindObjectOfType<SoundManager>();
+
+        player01Set = false;
     }
 
 	public void Update() {
@@ -45,13 +55,33 @@ public class PlayerAssignment : MonoBehaviour {
                 }
             }
         }
-        
+
+        if (player01Set)
+        {
+            Debug.Log(versusTimer);
+
+            versusTimer += Time.deltaTime;
+
+            if (versusTimer > 1.0f)
+            {
+                soundManager.PlaySound("Versus");
+                player01Set = false;
+            }
+
+            
+        }
+
         if (player1Index == 0 && Input.anyKeyDown)
         {
             for (int i = 1; i <= 11; i++)
             {
                 if (Input.GetButton("Player" + i + "Start"))
                 {
+
+                    soundManager.PlaySound("E_Start");
+
+                    player01Set = true;
+                    
                     player1Index = i;
                     pressStart1.SetActive(false);
                     player1.SetActive(true);
@@ -69,6 +99,7 @@ public class PlayerAssignment : MonoBehaviour {
                 {
                     if (player1Index != i)
                     {
+                        soundManager.PlaySound("F_Start");
                         player2Index = i;
                         pressStart2.SetActive(false);
                         player2.SetActive(true);

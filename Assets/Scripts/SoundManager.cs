@@ -22,7 +22,7 @@ public class SoundManager : MonoBehaviour {
 
     public AudioClip[] fuck;
     public AudioClip[] shit;
-    //public AudioClip[] damn;
+    public AudioClip[] damn;
     public AudioClip[] jesus;
     public AudioClip[] asshole;
     public AudioClip[] dickhead;
@@ -43,6 +43,7 @@ public class SoundManager : MonoBehaviour {
     public AudioClip[] collisions;
 
     public AudioClip[] grunts;
+    public AudioClip[] versus;
 
     public GameObject audio;
 
@@ -80,9 +81,9 @@ public class SoundManager : MonoBehaviour {
             case "SHIT":
                 audio.GetComponent<AudioSource>().PlayOneShot(shit[Random.Range(0, shit.Length)]);
                 break;
-            /*case "DAMN":
+            case "DAMN":
                 audio.GetComponent<AudioSource>().PlayOneShot(damn[Random.Range(0, damn.Length)]);
-                break;*/
+                break;
             case "JESUS":
                 audio.GetComponent<AudioSource>().PlayOneShot(jesus[Random.Range(0, jesus.Length)]);
                 break;
@@ -156,10 +157,13 @@ public class SoundManager : MonoBehaviour {
                 audio.GetComponent<AudioSource>().PlayOneShot(frenchCharge[Random.Range(0, frenchCharge.Length)]);
                 break;
             case "E_Start":
-                audio.GetComponent<AudioSource>().PlayOneShot(englishCharge[Random.Range(0, englishCharge.Length)]);
+                audio.GetComponent<AudioSource>().PlayOneShot(englishStart[Random.Range(0, englishStart.Length)]);
                 break;
             case "F_Start":
-                audio.GetComponent<AudioSource>().PlayOneShot(frenchCharge[Random.Range(0, frenchCharge.Length)]);
+                audio.GetComponent<AudioSource>().PlayOneShot(frenchStart[Random.Range(0, frenchStart.Length)]);
+                break;
+            case "Versus":
+                audio.GetComponent<AudioSource>().PlayOneShot(versus[Random.Range(0, versus.Length)]);
                 break;
             default:
                 audio.GetComponent<AudioSource>().PlayOneShot(grunts[Random.Range(0, grunts.Length)]);
