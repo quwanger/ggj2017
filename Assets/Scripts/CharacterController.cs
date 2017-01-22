@@ -30,14 +30,10 @@ public class CharacterController : MonoBehaviour {
     public float health;
     private float maxHealth;
     public Image healthBar;
-    public GameObject hero;
-    Sprite heroNormal01, heroNormal02;
-    Sprite heroHurt01, heroHurt02;
-    Sprite heroWin01, heroWin02;
-    Sprite heroLose01, heroLose02;
     bool isHit;
     float hitTimer;
-    private CharacterController otherHero;
+    public Image heroWin01, heroLose01, heroHit01, heroNormal01;
+    public Image heroWin02, heroLose02, heroHit02, heroNormal02;
 
     //firing
     public float projectileSpeed = 100.0f;
@@ -91,32 +87,14 @@ public class CharacterController : MonoBehaviour {
 
         soundManager = FindObjectOfType<SoundManager>();
 
-        if (teamIndex == 0) {
-            heroNormal01 = Resources.Load<Sprite>("E_Normal");
-            heroWin01 = Resources.Load<Sprite>("E_Win");
-            heroHurt01 = Resources.Load<Sprite>("E_Hurt");
-            heroLose01 = Resources.Load<Sprite>("E_Lose");
-            hero.GetComponent<Image>().sprite = heroNormal01;
-        } else
-        {
-            heroNormal02 = Resources.Load<Sprite>("F_Normal");
-            heroWin02 = Resources.Load<Sprite>("F_Win");
-            heroHurt02 = Resources.Load<Sprite>("F_Hurt");
-            heroLose02 = Resources.Load<Sprite>("F_Lose");
-            hero.GetComponent<Image>().sprite = heroNormal02;
-        }
-
-        CharacterController[] heroImages = FindObjectsOfType<CharacterController>();
-
-        foreach (CharacterController cc in heroImages)
-        {
-            if (cc != this)
-            {
-                otherHero = cc;
-            }
-        }
-
-        
+        heroHit01.enabled = false;
+        heroNormal01.enabled = true;
+        heroWin01.enabled = false;
+        heroLose01.enabled = false;
+        heroHit02.enabled = false;
+        heroNormal02.enabled = true;
+        heroWin02.enabled = false;
+        heroLose02.enabled = false;
     }
 
 
@@ -139,13 +117,11 @@ public class CharacterController : MonoBehaviour {
         {
             if (teamIndex == 0)
             {
-                hero.GetComponent<Image>().sprite = heroLose01;
-                otherHero.hero.GetComponent<Image>().sprite = heroWin02;
+                
             }
             else
             {
-                hero.GetComponent<Image>().sprite = heroLose02;
-                otherHero.hero.GetComponent<Image>().sprite = heroWin01;
+                
             }
 
             Invoke("LoadMenu", 5);
@@ -166,10 +142,12 @@ public class CharacterController : MonoBehaviour {
 
                     if (teamIndex == 0)
                     {
-                        hero.GetComponent<Image>().sprite = heroNormal01;
+                        heroHit01.enabled = false;
+                        heroNormal01.enabled = true;
                     } else
                     {
-                        hero.GetComponent<Image>().sprite = heroNormal02;
+                        heroHit02.enabled = false;
+                        heroNormal02.enabled = true;
                     }
                     
                 }
@@ -278,7 +256,7 @@ public class CharacterController : MonoBehaviour {
             chargeBar.enabled = false;
             charge.fillAmount = 0.0f;
 
-            //currentWords[currentWords.Count - 1].Fire(projectileSpeed);
+            //Debug.Log(currentWords.Last().word);
             soundManager.PlaySound(currentWords.Last().word);
             currentWords[currentWords.Count - 1].Fire(projectileSpeed * (chargeLevel*0.4f));
             chargeLevel = 0;
@@ -404,11 +382,14 @@ public class CharacterController : MonoBehaviour {
 
         if (teamIndex == 0)
         {
-            hero.GetComponent<Image>().sprite = heroHurt01;
-            
+            soundManager.PlaySound("E_Hit");
+            heroHit01.enabled = true;
+            heroNormal01.enabled = false;
         } else
         {
-            hero.GetComponent<Image>().sprite = heroHurt02;
+            soundManager.PlaySound("F_Hit");
+            heroHit02.enabled = true;
+            heroNormal02.enabled = false;
         }
         
 
@@ -418,6 +399,33 @@ public class CharacterController : MonoBehaviour {
         bloodParticles.Stop();
 
         if (health <= 0) {
+            if (this.teamIndex == 0)
+            {
+                soundManager.PlaySound("E_Lose");
+                soundManager.PlaySound("F_Win");
+                heroHit01.enabled = false;
+                heroNormal01.enabled = false;
+                heroWin01.enabled = false;
+                heroLose01.enabled = true;
+                heroHit02.enabled = false;
+                heroNormal02.enabled = false;
+                heroWin02.enabled = true;
+                heroLose02.enabled = false;
+            } else
+            {
+                soundManager.PlaySound("F_Lose");
+                soundManager.PlaySound("E_Win");
+                heroHit01.enabled = false;
+                heroNormal01.enabled = false;
+                heroWin01.enabled = true;
+                heroLose01.enabled = false;
+                heroHit02.enabled = false;
+                heroNormal02.enabled = false;
+                heroWin02.enabled = false;
+                heroLose02.enabled = true;
+            }
+            
+
             gameOver = true;
         }
     }
@@ -427,9 +435,9 @@ public class CharacterController : MonoBehaviour {
         SceneManager.LoadScene(0);
     }
 
-    public float collisionForce = 100.0f;
-    public void OnCollisionEnter2D(Collision2D collision) {
-        Rigidbody2D hitBody = collision.transform.GetComponent<Rigidbody2D>();
-        hitBody.AddForce(GetComponent<Rigidbody2D>().velocity * collisionForce);
-    }
+    //public float collisionForce = 100.0f;
+    //public void OnCollisionEnter2D(Collision2D collision) {
+    //    Rigidbody2D hitBody = collision.transform.GetComponent<Rigidbody2D>();
+    //    hitBody.AddForce(GetComponent<Rigidbody2D>().velocity * collisionForce);
+    //}
 }
