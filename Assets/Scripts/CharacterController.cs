@@ -53,6 +53,9 @@ public class CharacterController : MonoBehaviour {
 
     private bool gameOver;
 
+    public bool polite = false;
+    public string[] politeCharacters;
+
     // Use this for initialization
     void Start () {
         currentWords = new List<Word>();
@@ -63,10 +66,10 @@ public class CharacterController : MonoBehaviour {
         fonts.Add(Resources.Load<Font>(Path.Combine("Fonts", "murkybuzzDEMO")));
         fonts.Add(Resources.Load<Font>(Path.Combine("Fonts", "deathrattlebb_reg")));
         fonts.Add(Resources.Load<Font>(Path.Combine("Fonts", "Devastated")));
-        
+        fonts.Add(Resources.Load<Font>(Path.Combine("Fonts", "bouledoug DEMO")));
+
         maxHealth = health;
         gameOver = false;
-        
     }
 	
 	// Update is called once per frame
@@ -153,9 +156,13 @@ public class CharacterController : MonoBehaviour {
             }
             if(chargeAmount >= chargeLevel2) {
                 targetFont = fonts[2];
+                if (polite) {
+                    targetFont = fonts[3];
+                }
             }
             foreach (LetterProjectile letter in currentWords.Last().letters) {
                 letter.text.font = targetFont;
+                if (polite && targetFont == fonts[3]) letter.text.fontSize = 120;
                 //(letter.text.transform as RectTransform).localScale = Vector3.one * letterScaleTarget;
             }
 
@@ -236,6 +243,13 @@ public class CharacterController : MonoBehaviour {
         }
 
         wordToReturn = wordToReturn.Replace("_", " ");
+        if (polite) {
+            string censoredWord = "";
+            for(int i = 0; i < wordToReturn.Length; i++) {
+                censoredWord += politeCharacters[Random.Range(0, politeCharacters.Length)];
+            }
+            wordToReturn = censoredWord;
+        }
         return wordToReturn;
     }
 
