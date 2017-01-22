@@ -68,6 +68,8 @@ public class CharacterController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        SetPlayerIndex();
+
         currentWords = new List<Word>();
         charging = false;
         chargeBar.enabled = false;
@@ -84,6 +86,18 @@ public class CharacterController : MonoBehaviour {
         bloodParticles = Instantiate(Resources.Load<ParticleSystem>("bloodParticle"+teamIndex), transform, false) as ParticleSystem;
 
         soundManager = FindObjectOfType<SoundManager>();
+    }
+
+
+    void SetPlayerIndex() {
+        PlayerIndexes pi = FindObjectOfType<PlayerIndexes>();
+        if (teamIndex == 0) {
+            playerIndex = pi.player1Index;
+        }
+        if (teamIndex == 1) {
+            playerIndex = pi.player2Index;
+        }
+        Destroy(pi.gameObject);
     }
 	
 	// Update is called once per frame
