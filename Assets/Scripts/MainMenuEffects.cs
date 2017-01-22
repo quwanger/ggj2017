@@ -16,7 +16,7 @@ public class MainMenuEffects : MonoBehaviour {
         //optionsButton.transform.Translate(1000, 0, 0);
         //exitButton.transform.Translate(-1000, 0, 0);
     }
-	
+
 	// Update is called once per frame
 	void Update () {
         //if (playButton.transform.position.x - canvas.transform.position.x < 0) {
