@@ -30,6 +30,11 @@ public class CharacterController : MonoBehaviour {
     public float health;
     private float maxHealth;
     public Image healthBar;
+    public Sprite heroHit;
+    public Sprite heroNormal;
+    public Sprite heroWin;
+    public Sprite heroLose;
+    //private Sprite 
 
     //firing
     public float projectileSpeed = 100.0f;
@@ -73,6 +78,8 @@ public class CharacterController : MonoBehaviour {
 
         maxHealth = health;
         gameOver = false;
+
+        
 
         soundManager = FindObjectOfType<SoundManager>();
     }
