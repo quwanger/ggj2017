@@ -37,6 +37,8 @@ public class SoundManager : MonoBehaviour {
     public AudioClip[] cheers;
     public AudioClip[] collisions;
 
+    public AudioClip[] grunts;
+
     public GameObject audio;
 
     // Use this for initialization
@@ -54,8 +56,62 @@ public class SoundManager : MonoBehaviour {
         switch (word)
         {
             case "FUCK":
-                audio.GetComponent<AudioSource>().PlayOneShot(fuck[0]);
-                break; 
+                audio.GetComponent<AudioSource>().PlayOneShot(fuck[Random.Range(0, fuck.Length)]);
+                break;
+            case "SHIT":
+                audio.GetComponent<AudioSource>().PlayOneShot(fuck[Random.Range(0, fuck.Length)]);
+                break;
+            case "DAMN":
+                audio.GetComponent<AudioSource>().PlayOneShot(fuck[Random.Range(0, fuck.Length)]);
+                break;
+            case "JESUS":
+                audio.GetComponent<AudioSource>().PlayOneShot(fuck[Random.Range(0, fuck.Length)]);
+                break;
+            case "ASSHOLE":
+                audio.GetComponent<AudioSource>().PlayOneShot(fuck[Random.Range(0, fuck.Length)]);
+                break;
+            case "DICKHEAD":
+                audio.GetComponent<AudioSource>().PlayOneShot(fuck[Random.Range(0, fuck.Length)]);
+                break;
+            case "FUCKFACE":
+                audio.GetComponent<AudioSource>().PlayOneShot(fuck[Random.Range(0, fuck.Length)]);
+                break;
+            case "PIECEofSHIT":
+                audio.GetComponent<AudioSource>().PlayOneShot(fuck[Random.Range(0, fuck.Length)]);
+                break;
+            case "MOTHERFUCKER":
+                audio.GetComponent<AudioSource>().PlayOneShot(fuck[Random.Range(0, fuck.Length)]);
+                break;
+            case "SONofaBITCH":
+                audio.GetComponent<AudioSource>().PlayOneShot(fuck[Random.Range(0, fuck.Length)]);
+                break;
+            case "CRISS":
+                audio.GetComponent<AudioSource>().PlayOneShot(fuck[Random.Range(0, fuck.Length)]);
+                break;
+            case "MERDE":
+                audio.GetComponent<AudioSource>().PlayOneShot(fuck[Random.Range(0, fuck.Length)]);
+                break;
+            case "ESTI":
+                audio.GetComponent<AudioSource>().PlayOneShot(fuck[Random.Range(0, fuck.Length)]);
+                break;
+            case "TaGUEULE":
+                audio.GetComponent<AudioSource>().PlayOneShot(fuck[Random.Range(0, fuck.Length)]);
+                break;
+            case "MAUDIT":
+                audio.GetComponent<AudioSource>().PlayOneShot(fuck[Random.Range(0, fuck.Length)]);
+                break;
+            case "CALISSE":
+                audio.GetComponent<AudioSource>().PlayOneShot(fuck[Random.Range(0, fuck.Length)]);
+                break;
+            case "VaCHIER":
+                audio.GetComponent<AudioSource>().PlayOneShot(fuck[Random.Range(0, fuck.Length)]);
+                break;
+            case "TABARNAK":
+                audio.GetComponent<AudioSource>().PlayOneShot(fuck[Random.Range(0, fuck.Length)]);
+                break;
+            default:
+                audio.GetComponent<AudioSource>().PlayOneShot(grunts[Random.Range(0, grunts.Length)]);
+                break;
         }
     }
 }
