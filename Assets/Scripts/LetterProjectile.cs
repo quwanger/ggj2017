@@ -32,7 +32,7 @@ public class LetterProjectile : MonoBehaviour {
             word.letters.Remove(this);
             Destroy(gameObject);
         }
-	}
+    }
 
     public void OnCollisionEnter2D(Collision2D collision) {
 
