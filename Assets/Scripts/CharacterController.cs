@@ -49,7 +49,7 @@ public class CharacterController : MonoBehaviour {
     private Vector2 rightJoystick = Vector2.zero;
     
     //text & fonts
-    List<Font> fonts;
+    public List<Font> fonts;
 
     // Sounds
     private SoundManager soundManager;
@@ -281,7 +281,7 @@ public class CharacterController : MonoBehaviour {
             projectile.health = projectileLevel;
 
             //text
-            projectile.text.text = letter.ToString();
+            projectile.letter = letter.ToString();
 
             UpdateLetterTransform(projectile, count, word);
             
