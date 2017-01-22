@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine.UI; // Required when Using UI elements.
 using System.Linq;
 using UnityEngine.SceneManagement;
+using XInputDotNetPure;
 
 public class CharacterController : MonoBehaviour {
 
@@ -140,6 +141,7 @@ public class CharacterController : MonoBehaviour {
             Move();
             Look();
             Fire();
+            BackToMainMenu();
 
             if (isHit)
             {
@@ -280,6 +282,8 @@ public class CharacterController : MonoBehaviour {
             soundManager.GetComponent<AudioSource>().Stop();
             soundManager.PlaySound(currentWords.Last().word);
             currentWords[currentWords.Count - 1].Fire(projectileSpeed * (chargeLevel*0.4f));
+            StartCoroutine(FireVibrate());
+            
             chargeLevel = 0;
         }
 
@@ -397,6 +401,7 @@ public class CharacterController : MonoBehaviour {
     }
 
     public void Damage(float damage) {
+        StartCoroutine(DamageVibrate());
         health -= damage;
 
         isHit = true;
@@ -420,6 +425,7 @@ public class CharacterController : MonoBehaviour {
         bloodParticles.Stop();
 
         if (health <= 0) {
+            StartCoroutine(DieVibrate());
             if (this.teamIndex == 0)
             {
                 soundManager.PlaySound("E_Lose");
@@ -458,7 +464,7 @@ public class CharacterController : MonoBehaviour {
 
     public void BackToMainMenu()
     {
-        if (Input.GetButton("Player1Back"))
+        if (Input.GetButton("MenuBack"))
         {
             SceneManager.LoadScene(0);
         }
@@ -469,4 +475,25 @@ public class CharacterController : MonoBehaviour {
     //    Rigidbody2D hitBody = collision.transform.GetComponent<Rigidbody2D>();
     //    hitBody.AddForce(GetComponent<Rigidbody2D>().velocity * collisionForce);
     //}
+
+    IEnumerator FireVibrate() {
+        int index = (playerIndex == 1) ? 1 : 0; 
+        GamePad.SetVibration((PlayerIndex)index, 0.5f, 0.5f);
+        yield return new WaitForSeconds(0.3f);
+        GamePad.SetVibration((PlayerIndex)index, 0f, 0f);
+    }
+
+    IEnumerator DamageVibrate() {
+        int index = (playerIndex == 1) ? 1 : 0;
+        GamePad.SetVibration((PlayerIndex)index, 1.0f, 1.0f);
+        yield return new WaitForSeconds(0.4f);
+        GamePad.SetVibration((PlayerIndex)index, 0f, 0f);
+    }
+
+    IEnumerator DieVibrate() {
+        int index = (playerIndex == 1) ? 1 : 0;
+        GamePad.SetVibration((PlayerIndex)index, 1.0f, 1.0f);
+        yield return new WaitForSeconds(1.5f);
+        GamePad.SetVibration((PlayerIndex)index, 0f, 0f);
+    }
 }

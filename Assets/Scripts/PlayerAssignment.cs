@@ -58,7 +58,6 @@ public class PlayerAssignment : MonoBehaviour {
 
         if (player01Set)
         {
-            Debug.Log(versusTimer);
 
             versusTimer += Time.deltaTime;
 
