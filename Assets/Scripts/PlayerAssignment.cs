@@ -87,16 +87,8 @@ public class PlayerAssignment : MonoBehaviour {
             playerIndexes.player2Index = player2Index;
 
             timerSet = true;
-            Debug.Log("Timer Set");
-            //StartCoroutine(Timeout());                               
+            Debug.Log("Timer Set");                           
         }
 	}
-
-    IEnumerator Timeout()
-    {
-        loadingImage.SetActive(true);
-        yield return new WaitForSeconds(3);
-        SceneManager.LoadScene(3);
-    }
 
 }
