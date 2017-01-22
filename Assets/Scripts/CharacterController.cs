@@ -30,14 +30,10 @@ public class CharacterController : MonoBehaviour {
     public float health;
     private float maxHealth;
     public Image healthBar;
-    public GameObject hero;
-    Sprite heroNormal01, heroNormal02;
-    Sprite heroHurt01, heroHurt02;
-    Sprite heroWin01, heroWin02;
-    Sprite heroLose01, heroLose02;
     bool isHit;
     float hitTimer;
-    private CharacterController otherHero;
+    public Image heroWin01, heroLose01, heroHit01, heroNormal01;
+    public Image heroWin02, heroLose02, heroHit02, heroNormal02;
 
     //firing
     public float projectileSpeed = 100.0f;
@@ -91,32 +87,14 @@ public class CharacterController : MonoBehaviour {
 
         soundManager = FindObjectOfType<SoundManager>();
 
-        if (teamIndex == 0) {
-            heroNormal01 = Resources.Load<Sprite>("E_Normal");
-            heroWin01 = Resources.Load<Sprite>("E_Win");
-            heroHurt01 = Resources.Load<Sprite>("E_Hurt");
-            heroLose01 = Resources.Load<Sprite>("E_Lose");
-            hero.GetComponent<Image>().sprite = heroNormal01;
-        } else
-        {
-            heroNormal02 = Resources.Load<Sprite>("F_Normal");
-            heroWin02 = Resources.Load<Sprite>("F_Win");
-            heroHurt02 = Resources.Load<Sprite>("F_Hurt");
-            heroLose02 = Resources.Load<Sprite>("F_Lose");
-            hero.GetComponent<Image>().sprite = heroNormal02;
-        }
-
-        CharacterController[] heroImages = FindObjectsOfType<CharacterController>();
-
-        foreach (CharacterController cc in heroImages)
-        {
-            if (cc != this)
-            {
-                otherHero = cc;
-            }
-        }
-
-        
+        heroHit01.enabled = false;
+        heroNormal01.enabled = true;
+        heroWin01.enabled = false;
+        heroLose01.enabled = false;
+        heroHit02.enabled = false;
+        heroNormal02.enabled = true;
+        heroWin02.enabled = false;
+        heroLose02.enabled = false;
     }
 
 
@@ -139,13 +117,11 @@ public class CharacterController : MonoBehaviour {
         {
             if (teamIndex == 0)
             {
-                hero.GetComponent<Image>().sprite = heroLose01;
-                otherHero.hero.GetComponent<Image>().sprite = heroWin02;
+                
             }
             else
             {
-                hero.GetComponent<Image>().sprite = heroLose02;
-                otherHero.hero.GetComponent<Image>().sprite = heroWin01;
+                
             }
 
             Invoke("LoadMenu", 5);
@@ -166,10 +142,12 @@ public class CharacterController : MonoBehaviour {
 
                     if (teamIndex == 0)
                     {
-                        hero.GetComponent<Image>().sprite = heroNormal01;
+                        heroHit01.enabled = false;
+                        heroNormal01.enabled = true;
                     } else
                     {
-                        hero.GetComponent<Image>().sprite = heroNormal02;
+                        heroHit02.enabled = false;
+                        heroNormal02.enabled = true;
                     }
                     
                 }
@@ -212,12 +190,14 @@ public class CharacterController : MonoBehaviour {
             chargeLevel = (int)(chargeAmount * 2.0f) + 1;
             if (!charging) {
                 CreateWord(PickRandomWord(chargeLevel), chargeLevel);
+                currentWords.Last().Randomize();
             } else if (chargeAmount >= chargeLevel1 && !level1Reached) {
                 Word w = currentWords.Last();
                 currentWords.Remove(currentWords.Last());
                 w.DestroyLetters();
                 Destroy(w.gameObject);
                 CreateWord(PickRandomWord(chargeLevel), chargeLevel);
+                currentWords.Last().Randomize();
                 level1Reached = true;
             } else if (chargeAmount >= chargeLevel2 && !level2Reached) {
                 Word w = currentWords.Last();
@@ -225,6 +205,8 @@ public class CharacterController : MonoBehaviour {
                 w.DestroyLetters();
                 Destroy(w.gameObject);
                 CreateWord(PickRandomWord(chargeLevel), chargeLevel);
+                currentWords.Last().Randomize();
+                Debug.Log("Randomized Longest Word!");
                 level2Reached = true;
             }
 
@@ -249,15 +231,14 @@ public class CharacterController : MonoBehaviour {
                 targetFont = fonts[1];
             }
             if(chargeAmount >= chargeLevel2) {
-                targetFont = fonts[2];
-                if (polite) {
-                    targetFont = fonts[3];
-                }
+                targetFont = fonts[3];
             }
             foreach (LetterProjectile letter in currentWords.Last().letters) {
                 letter.text.font = targetFont;
-                if (polite && targetFont == fonts[3]) letter.text.fontSize = 120;
-                //(letter.text.transform as RectTransform).localScale = Vector3.one * letterScaleTarget;
+                if (targetFont == fonts[3]) {
+                    letter.text.fontSize = 120;
+                }
+                letter.text.font = targetFont;
             }
 
         } else if (Input.GetAxis("Player" + playerIndex + "Fire1") == 0 && charging)
@@ -275,7 +256,7 @@ public class CharacterController : MonoBehaviour {
             chargeBar.enabled = false;
             charge.fillAmount = 0.0f;
 
-            //currentWords[currentWords.Count - 1].Fire(projectileSpeed);
+            //Debug.Log(currentWords.Last().word);
             soundManager.PlaySound(currentWords.Last().word);
             currentWords[currentWords.Count - 1].Fire(projectileSpeed * (chargeLevel*0.4f));
             chargeLevel = 0;
@@ -401,11 +382,12 @@ public class CharacterController : MonoBehaviour {
 
         if (teamIndex == 0)
         {
-            hero.GetComponent<Image>().sprite = heroHurt01;
-            
+            heroHit01.enabled = true;
+            heroNormal01.enabled = false;
         } else
         {
-            hero.GetComponent<Image>().sprite = heroHurt02;
+            heroHit02.enabled = true;
+            heroNormal02.enabled = false;
         }
         
 
@@ -415,6 +397,29 @@ public class CharacterController : MonoBehaviour {
         bloodParticles.Stop();
 
         if (health <= 0) {
+            if (this.teamIndex == 0)
+            {
+                heroHit01.enabled = false;
+                heroNormal01.enabled = false;
+                heroWin01.enabled = false;
+                heroLose01.enabled = true;
+                heroHit02.enabled = false;
+                heroNormal02.enabled = false;
+                heroWin02.enabled = true;
+                heroLose02.enabled = false;
+            } else
+            {
+                heroHit01.enabled = false;
+                heroNormal01.enabled = false;
+                heroWin01.enabled = true;
+                heroLose01.enabled = false;
+                heroHit02.enabled = false;
+                heroNormal02.enabled = false;
+                heroWin02.enabled = false;
+                heroLose02.enabled = true;
+            }
+            
+
             gameOver = true;
         }
     }
