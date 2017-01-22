@@ -57,7 +57,7 @@ public class CharacterController : MonoBehaviour {
     private Vector2 rightJoystick = Vector2.zero;
     
     //text & fonts
-    List<Font> fonts;
+    public List<Font> fonts;
 
     // Sounds
     private SoundManager soundManager;
@@ -67,8 +67,12 @@ public class CharacterController : MonoBehaviour {
     public bool polite = false;
     public string[] politeCharacters;
 
+    private ParticleSystem bloodParticles;
+
     // Use this for initialization
     void Start () {
+        SetPlayerIndex();
+
         currentWords = new List<Word>();
         charging = false;
         chargeBar.enabled = false;
@@ -81,6 +85,9 @@ public class CharacterController : MonoBehaviour {
 
         maxHealth = health;
         gameOver = false;
+
+        bloodParticles = Instantiate(Resources.Load<ParticleSystem>("bloodParticle"+teamIndex)) as ParticleSystem;
+        bloodParticles.transform.parent = transform;
 
         soundManager = FindObjectOfType<SoundManager>();
 
@@ -110,6 +117,18 @@ public class CharacterController : MonoBehaviour {
         }
 
         
+    }
+
+
+    void SetPlayerIndex() {
+        PlayerIndexes pi = FindObjectOfType<PlayerIndexes>();
+        if (teamIndex == 0) {
+            playerIndex = pi.player1Index;
+        }
+        if (teamIndex == 1) {
+            playerIndex = pi.player2Index;
+        }
+        Destroy(pi.gameObject);
     }
 	
 	// Update is called once per frame
@@ -348,7 +367,7 @@ public class CharacterController : MonoBehaviour {
             projectile.health = projectileLevel;
 
             //text
-            projectile.text.text = letter.ToString();
+            projectile.letter = letter.ToString();
 
             UpdateLetterTransform(projectile, count, word);
             
@@ -390,9 +409,10 @@ public class CharacterController : MonoBehaviour {
 
         healthBar.fillAmount = health / maxHealth;
 
+        bloodParticles.Emit(10);
+        bloodParticles.Stop();
+
         if (health <= 0) {
-
-
             gameOver = true;
         }
     }

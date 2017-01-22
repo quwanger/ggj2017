@@ -12,12 +12,15 @@ public class PlayerAssignment : MonoBehaviour {
     public GameObject versus;
     public GameObject loadingImage;
 
-    private int player1Index;
-    private int player2Index;
+    public int player1Index;
+    public int player2Index;
     private float timer;
     private bool timerSet;
 
+    public PlayerIndexes playerIndexes;
+
     public void Start() {
+        
         player1Index = 0;
         player2Index = 0;
         timer = 3.0f;
@@ -80,17 +83,12 @@ public class PlayerAssignment : MonoBehaviour {
 
 		if(player1Index != 0 && player2Index != 0) {
             versus.SetActive(true);
+            playerIndexes.player1Index = player1Index;
+            playerIndexes.player2Index = player2Index;
+
             timerSet = true;
-            Debug.Log("Timer Set");
-            //StartCoroutine(Timeout());                               
+            Debug.Log("Timer Set");                           
         }
 	}
-
-    IEnumerator Timeout()
-    {
-        loadingImage.SetActive(true);
-        yield return new WaitForSeconds(3);
-        SceneManager.LoadScene(3);
-    }
 
 }
