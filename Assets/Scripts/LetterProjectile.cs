@@ -17,6 +17,8 @@ public class LetterProjectile : MonoBehaviour {
 
     public float startOpacity = 0.3f;
 
+    public ParticleSystem sparkParticles;
+
 	// Use this for initialization
 	void Start () {
 	    if(word.owner.teamIndex == 0) {
@@ -24,12 +26,15 @@ public class LetterProjectile : MonoBehaviour {
         } else if(word.owner.teamIndex == 1) {
             text.color = new Color(0, 0, 1, startOpacity);
         }
-	}
+
+        sparkParticles = Instantiate(Resources.Load<ParticleSystem>("sparkParticles"), transform, false) as ParticleSystem;
+    }
 	
 	// Update is called once per frame
 	void Update () {
         if(active) {
             life += Time.deltaTime;
+            text.color = new Color(text.color.r, text.color.g, text.color.b, timeout - life);
         }
         if(life >= timeout || health <= 0) {
             word.letters.Remove(this);
@@ -38,7 +43,7 @@ public class LetterProjectile : MonoBehaviour {
 
         if(!active) {
             text.text = word.owner.politeCharacters[(Random.Range(0, word.owner.politeCharacters.Length))];
-            if (text.font == word.owner.fonts[3]) text.font = word.owner.fonts[4];
+            if (text.font == word.owner.fonts[2]) text.font = word.owner.fonts[3];
         }
     }
 
@@ -58,5 +63,8 @@ public class LetterProjectile : MonoBehaviour {
         if (hitLetter == null) {
             health--;
         }
+
+        sparkParticles.Emit(3);
+        sparkParticles.Stop();
     }
 }

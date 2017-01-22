@@ -78,7 +78,7 @@ public class CharacterController : MonoBehaviour {
         fonts.Add(Resources.Load<Font>(Path.Combine("Fonts", "murkybuzzDEMO")));
         fonts.Add(Resources.Load<Font>(Path.Combine("Fonts", "deathrattlebb_reg")));
         fonts.Add(Resources.Load<Font>(Path.Combine("Fonts", "Devastated")));
-        fonts.Add(Resources.Load<Font>(Path.Combine("Fonts", "bouledoug DEMO")));
+        fonts.Add(Resources.Load<Font>(Path.Combine("Fonts", "bouledoug")));
 
         maxHealth = health;
         gameOver = false;
@@ -91,13 +91,15 @@ public class CharacterController : MonoBehaviour {
 
     void SetPlayerIndex() {
         PlayerIndexes pi = FindObjectOfType<PlayerIndexes>();
-        if (teamIndex == 0) {
-            playerIndex = pi.player1Index;
+        if(pi != null) {
+            if (teamIndex == 0) {
+                playerIndex = pi.player1Index;
+            }
+            if (teamIndex == 1) {
+                playerIndex = pi.player2Index;
+            }
+            Destroy(pi.gameObject);
         }
-        if (teamIndex == 1) {
-            playerIndex = pi.player2Index;
-        }
-        Destroy(pi.gameObject);
     }
 	
 	// Update is called once per frame
