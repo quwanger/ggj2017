@@ -55,6 +55,7 @@ public class CharacterController : MonoBehaviour {
     //text & fonts
     public List<Font> fonts;
 
+
     // Sounds
     private SoundManager soundManager;
 
@@ -445,4 +446,18 @@ public class CharacterController : MonoBehaviour {
     {
         SceneManager.LoadScene(0);
     }
+
+    public void BackToMainMenu()
+    {
+        if (Input.GetButton("Player1Back"))
+        {
+            SceneManager.LoadScene(0);
+        }
+    }
+
+    //public float collisionForce = 100.0f;
+    //public void OnCollisionEnter2D(Collision2D collision) {
+    //    Rigidbody2D hitBody = collision.transform.GetComponent<Rigidbody2D>();
+    //    hitBody.AddForce(GetComponent<Rigidbody2D>().velocity * collisionForce);
+    //}
 }
