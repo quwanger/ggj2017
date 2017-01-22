@@ -39,6 +39,7 @@ public class LetterProjectile : MonoBehaviour {
         CharacterController cc = collision.collider.GetComponent<CharacterController>();
         if(cc != null && cc.teamIndex != word.owner.teamIndex) {
             cc.Damage(damage);
+            health = 0;
         }
 
         LetterProjectile hitLetter = collision.collider.GetComponent<LetterProjectile>();
