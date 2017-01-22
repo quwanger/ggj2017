@@ -212,12 +212,14 @@ public class CharacterController : MonoBehaviour {
             chargeLevel = (int)(chargeAmount * 2.0f) + 1;
             if (!charging) {
                 CreateWord(PickRandomWord(chargeLevel), chargeLevel);
+                currentWords.Last().Randomize();
             } else if (chargeAmount >= chargeLevel1 && !level1Reached) {
                 Word w = currentWords.Last();
                 currentWords.Remove(currentWords.Last());
                 w.DestroyLetters();
                 Destroy(w.gameObject);
                 CreateWord(PickRandomWord(chargeLevel), chargeLevel);
+                currentWords.Last().Randomize();
                 level1Reached = true;
             } else if (chargeAmount >= chargeLevel2 && !level2Reached) {
                 Word w = currentWords.Last();
@@ -225,6 +227,8 @@ public class CharacterController : MonoBehaviour {
                 w.DestroyLetters();
                 Destroy(w.gameObject);
                 CreateWord(PickRandomWord(chargeLevel), chargeLevel);
+                currentWords.Last().Randomize();
+                Debug.Log("Randomized Longest Word!");
                 level2Reached = true;
             }
 
@@ -249,15 +253,14 @@ public class CharacterController : MonoBehaviour {
                 targetFont = fonts[1];
             }
             if(chargeAmount >= chargeLevel2) {
-                targetFont = fonts[2];
-                if (polite) {
-                    targetFont = fonts[3];
-                }
+                targetFont = fonts[3];
             }
             foreach (LetterProjectile letter in currentWords.Last().letters) {
                 letter.text.font = targetFont;
-                if (polite && targetFont == fonts[3]) letter.text.fontSize = 120;
-                //(letter.text.transform as RectTransform).localScale = Vector3.one * letterScaleTarget;
+                if (targetFont == fonts[3]) {
+                    letter.text.fontSize = 120;
+                }
+                letter.text.font = targetFont;
             }
 
         } else if (Input.GetAxis("Player" + playerIndex + "Fire1") == 0 && charging)

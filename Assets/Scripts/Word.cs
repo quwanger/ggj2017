@@ -31,6 +31,11 @@ public class Word : MonoBehaviour {
             letter.active = true;
             letter.text.color = new Color(letter.text.color.r, letter.text.color.g, letter.text.color.b, 1.0f);
             letter.text.text = letter.letter;
+            if (owner.polite) {
+                letter.Randomize();
+                letter.text.font = owner.fonts[3];
+                letter.text.fontSize = 120;
+            }
         }
     }
 
@@ -39,6 +44,12 @@ public class Word : MonoBehaviour {
             LetterProjectile letter = letters[i];
             letters.RemoveAt(i);
             Destroy(letter.gameObject);
+        }
+    }
+
+    public void Randomize() {
+        foreach(LetterProjectile letter in letters) {
+            letter.Randomize();
         }
     }
 }
