@@ -30,11 +30,14 @@ public class CharacterController : MonoBehaviour {
     public float health;
     private float maxHealth;
     public Image healthBar;
-    public Sprite heroHit;
-    public Sprite heroNormal;
-    public Sprite heroWin;
-    public Sprite heroLose;
-    //private Sprite 
+    public GameObject hero;
+    Sprite heroNormal01, heroNormal02;
+    Sprite heroHurt01, heroHurt02;
+    Sprite heroWin01, heroWin02;
+    Sprite heroLose01, heroLose02;
+    bool isHit;
+    float hitTimer;
+    private CharacterController otherHero;
 
     //firing
     public float projectileSpeed = 100.0f;
@@ -79,21 +82,77 @@ public class CharacterController : MonoBehaviour {
         maxHealth = health;
         gameOver = false;
 
-        
-
         soundManager = FindObjectOfType<SoundManager>();
+
+        if (teamIndex == 0) {
+            heroNormal01 = Resources.Load<Sprite>("E_Normal");
+            heroWin01 = Resources.Load<Sprite>("E_Win");
+            heroHurt01 = Resources.Load<Sprite>("E_Hurt");
+            heroLose01 = Resources.Load<Sprite>("E_Lose");
+            hero.GetComponent<Image>().sprite = heroNormal01;
+        } else
+        {
+            heroNormal02 = Resources.Load<Sprite>("F_Normal");
+            heroWin02 = Resources.Load<Sprite>("F_Win");
+            heroHurt02 = Resources.Load<Sprite>("F_Hurt");
+            heroLose02 = Resources.Load<Sprite>("F_Lose");
+            hero.GetComponent<Image>().sprite = heroNormal02;
+        }
+
+        CharacterController[] heroImages = FindObjectsOfType<CharacterController>();
+
+        foreach (CharacterController cc in heroImages)
+        {
+            if (cc != this)
+            {
+                otherHero = cc;
+            }
+        }
+
+        
     }
 	
 	// Update is called once per frame
 	void Update () {
         if (gameOver)
         {
+            if (teamIndex == 0)
+            {
+                hero.GetComponent<Image>().sprite = heroLose01;
+                otherHero.hero.GetComponent<Image>().sprite = heroWin02;
+            }
+            else
+            {
+                hero.GetComponent<Image>().sprite = heroLose02;
+                otherHero.hero.GetComponent<Image>().sprite = heroWin01;
+            }
+
             Invoke("LoadMenu", 5);
         } else
         {
             Move();
             Look();
             Fire();
+
+            if (isHit)
+            {
+                hitTimer += Time.deltaTime;
+
+                if (hitTimer >= 1.0f)
+                {
+                    isHit = false;
+                    hitTimer = 0.0f;
+
+                    if (teamIndex == 0)
+                    {
+                        hero.GetComponent<Image>().sprite = heroNormal01;
+                    } else
+                    {
+                        hero.GetComponent<Image>().sprite = heroNormal02;
+                    }
+                    
+                }
+            }
         }
     }
 
@@ -122,6 +181,8 @@ public class CharacterController : MonoBehaviour {
 
     void Fire()
     {
+        //isHit = false;
+
         //Debug.Log(Input.GetAxis(("Player" + playerIndex + "Fire1")));
         if (currentWords.Count < maximumAvailableWords && Input.GetAxis("Player" + playerIndex + "Fire1") != 0.0f)
         {
@@ -315,13 +376,22 @@ public class CharacterController : MonoBehaviour {
     public void Damage(float damage) {
         health -= damage;
 
-        Debug.Log(health);
+        isHit = true;
+
+        if (teamIndex == 0)
+        {
+            hero.GetComponent<Image>().sprite = heroHurt01;
+            
+        } else
+        {
+            hero.GetComponent<Image>().sprite = heroHurt02;
+        }
+        
 
         healthBar.fillAmount = health / maxHealth;
 
         if (health <= 0) {
-            //other player wins!
-            //Destroy(gameObject);
+
 
             gameOver = true;
         }
