@@ -151,10 +151,10 @@ public class SoundManager : MonoBehaviour {
                 audio.GetComponent<AudioSource>().PlayOneShot(collisions[Random.Range(0, collisions.Length)]);
                 break;
             case "E_Charge":
-                audio.GetComponent<AudioSource>().PlayOneShot(englishCharge[Random.Range(0, englishCharge.Length)]);
+                audio.GetComponent<AudioSource>().PlayOneShot(englishCharge[Random.Range(0, englishCharge.Length)], 0.6f);
                 break;
             case "F_Charge":
-                audio.GetComponent<AudioSource>().PlayOneShot(frenchCharge[Random.Range(0, frenchCharge.Length)]);
+                audio.GetComponent<AudioSource>().PlayOneShot(frenchCharge[Random.Range(0, frenchCharge.Length)], 0.6f);
                 break;
             case "E_Start":
                 audio.GetComponent<AudioSource>().PlayOneShot(englishStart[Random.Range(0, englishStart.Length)]);

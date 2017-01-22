@@ -69,6 +69,7 @@ public class CharacterController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         SetPlayerIndex();
+        SetPlayerPolite();
 
         currentWords = new List<Word>();
         charging = false;
@@ -111,9 +112,17 @@ public class CharacterController : MonoBehaviour {
             Destroy(pi.gameObject);
         }
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    void SetPlayerPolite() {
+        if (PlayerPrefs.GetInt("polite") != 0) {
+            polite = true;
+        } else {
+            polite = false;
+        }
+    }
+
+    // Update is called once per frame
+    void Update () {
         if (gameOver)
         {
             if (teamIndex == 0)
