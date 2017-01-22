@@ -63,7 +63,7 @@ public class PlayerAssignment : MonoBehaviour {
 
             if (versusTimer > 1.0f)
             {
-                soundManager.PlaySound("Versus");
+                //soundManager.PlaySound("Versus");
                 player01Set = false;
             }
 
@@ -77,7 +77,7 @@ public class PlayerAssignment : MonoBehaviour {
                 if (Input.GetButton("Player" + i + "Start"))
                 {
 
-                    soundManager.PlaySound("E_Start");
+                    soundManager.PlaySound("E_Win");
 
                     player01Set = true;
                     
@@ -99,7 +99,7 @@ public class PlayerAssignment : MonoBehaviour {
                 {
                     if (player1Index != i)
                     {
-                        soundManager.PlaySound("F_Start");
+                        soundManager.PlaySound("F_Win");
                         player2Index = i;
                         pressStart2.SetActive(false);
                         //player2.SetActive(true);
