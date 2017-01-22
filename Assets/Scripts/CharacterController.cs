@@ -263,6 +263,10 @@ public class CharacterController : MonoBehaviour {
                 letter.text.font = targetFont;
             }
 
+            //vibration for charging
+            int index = (playerIndex == 1) ? 1 : 0;
+            GamePad.SetVibration((PlayerIndex)index, 0, chargeAmount / 3);
+
         } else if (Input.GetAxis("Player" + playerIndex + "Fire1") == 0 && charging)
         {
             charging = false;
@@ -283,7 +287,7 @@ public class CharacterController : MonoBehaviour {
             soundManager.PlaySound(currentWords.Last().word);
             currentWords[currentWords.Count - 1].Fire(projectileSpeed * (chargeLevel*0.4f));
             StartCoroutine(FireVibrate());
-            
+
             chargeLevel = 0;
         }
 
@@ -477,8 +481,8 @@ public class CharacterController : MonoBehaviour {
     //}
 
     IEnumerator FireVibrate() {
-        int index = (playerIndex == 1) ? 1 : 0; 
-        GamePad.SetVibration((PlayerIndex)index, 0.5f, 0.5f);
+        int index = (playerIndex == 1) ? 1 : 0;
+        GamePad.SetVibration((PlayerIndex)index, 0.8f, 0.8f);
         yield return new WaitForSeconds(0.3f);
         GamePad.SetVibration((PlayerIndex)index, 0f, 0f);
     }
