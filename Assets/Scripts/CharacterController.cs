@@ -152,7 +152,6 @@ public class CharacterController : MonoBehaviour {
 
             chargeBar.enabled = true;
             charge.fillAmount = chargeAmount;
-            charge.color = new Color32(255, 255, 225, 100);
 
             //swap fonts/scale text
             Font targetFont = fonts[0];
