@@ -22,7 +22,7 @@ public class SoundManager : MonoBehaviour {
 
     public AudioClip[] fuck;
     public AudioClip[] shit;
-    public AudioClip[] damn;
+    //public AudioClip[] damn;
     public AudioClip[] jesus;
     public AudioClip[] asshole;
     public AudioClip[] dickhead;
@@ -80,9 +80,9 @@ public class SoundManager : MonoBehaviour {
             case "SHIT":
                 audio.GetComponent<AudioSource>().PlayOneShot(shit[Random.Range(0, shit.Length)]);
                 break;
-            case "DAMN":
+            /*case "DAMN":
                 audio.GetComponent<AudioSource>().PlayOneShot(damn[Random.Range(0, damn.Length)]);
-                break;
+                break;*/
             case "JESUS":
                 audio.GetComponent<AudioSource>().PlayOneShot(jesus[Random.Range(0, jesus.Length)]);
                 break;
