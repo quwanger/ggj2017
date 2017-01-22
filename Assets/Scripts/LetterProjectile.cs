@@ -27,7 +27,9 @@ public class LetterProjectile : MonoBehaviour {
             text.color = new Color(0, 0, 1, startOpacity);
         }
 
-        sparkParticles = Instantiate(Resources.Load<ParticleSystem>("sparkParticles"), transform, false) as ParticleSystem;
+        sparkParticles = Instantiate(Resources.Load<ParticleSystem>("sparkParticles")) as ParticleSystem;
+        sparkParticles.transform.SetParent(word.owner.transform, false);
+        sparkParticles.transform.position = transform.position;
     }
 	
 	// Update is called once per frame
