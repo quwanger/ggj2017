@@ -22,7 +22,7 @@ public class SoundManager : MonoBehaviour {
 
     public AudioClip[] fuck;
     public AudioClip[] shit;
-    //public AudioClip[] damn;
+    public AudioClip[] damn;
     public AudioClip[] jesus;
     public AudioClip[] asshole;
     public AudioClip[] dickhead;
@@ -80,9 +80,9 @@ public class SoundManager : MonoBehaviour {
             case "SHIT":
                 audio.GetComponent<AudioSource>().PlayOneShot(shit[Random.Range(0, shit.Length)]);
                 break;
-            /*case "DAMN":
+            case "DAMN":
                 audio.GetComponent<AudioSource>().PlayOneShot(damn[Random.Range(0, damn.Length)]);
-                break;*/
+                break;
             case "JESUS":
                 audio.GetComponent<AudioSource>().PlayOneShot(jesus[Random.Range(0, jesus.Length)]);
                 break;
@@ -150,10 +150,10 @@ public class SoundManager : MonoBehaviour {
                 audio.GetComponent<AudioSource>().PlayOneShot(collisions[Random.Range(0, collisions.Length)]);
                 break;
             case "E_Charge":
-                audio.GetComponent<AudioSource>().PlayOneShot(englishCharge[Random.Range(0, englishCharge.Length)]);
+                audio.GetComponent<AudioSource>().PlayOneShot(englishCharge[Random.Range(0, englishCharge.Length)], 0.6f);
                 break;
             case "F_Charge":
-                audio.GetComponent<AudioSource>().PlayOneShot(frenchCharge[Random.Range(0, frenchCharge.Length)]);
+                audio.GetComponent<AudioSource>().PlayOneShot(frenchCharge[Random.Range(0, frenchCharge.Length)], 0.6f);
                 break;
             case "E_Start":
                 audio.GetComponent<AudioSource>().PlayOneShot(englishCharge[Random.Range(0, englishCharge.Length)]);
