@@ -39,7 +39,6 @@ public class LetterProjectile : MonoBehaviour {
         if(!active) {
             text.text = word.owner.politeCharacters[(Random.Range(0, word.owner.politeCharacters.Length))];
             if (text.font == word.owner.fonts[3]) text.font = word.owner.fonts[4];
-            Debug.Log(text.font);
         }
     }
 

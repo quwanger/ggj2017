@@ -64,6 +64,8 @@ public class CharacterController : MonoBehaviour {
     public bool polite = false;
     public string[] politeCharacters;
 
+    private ParticleSystem bloodParticles;
+
     // Use this for initialization
     void Start () {
         currentWords = new List<Word>();
@@ -79,7 +81,7 @@ public class CharacterController : MonoBehaviour {
         maxHealth = health;
         gameOver = false;
 
-        
+        bloodParticles = Instantiate(Resources.Load<ParticleSystem>("bloodParticle"+teamIndex), transform, false) as ParticleSystem;
 
         soundManager = FindObjectOfType<SoundManager>();
     }
@@ -315,14 +317,12 @@ public class CharacterController : MonoBehaviour {
     public void Damage(float damage) {
         health -= damage;
 
-        Debug.Log(health);
-
         healthBar.fillAmount = health / maxHealth;
 
-        if (health <= 0) {
-            //other player wins!
-            //Destroy(gameObject);
+        bloodParticles.Emit(10);
+        bloodParticles.Stop();
 
+        if (health <= 0) {
             gameOver = true;
         }
     }
