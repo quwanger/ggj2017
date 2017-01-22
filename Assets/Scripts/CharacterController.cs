@@ -83,7 +83,8 @@ public class CharacterController : MonoBehaviour {
         maxHealth = health;
         gameOver = false;
 
-        bloodParticles = Instantiate(Resources.Load<ParticleSystem>("bloodParticle"+teamIndex), transform, false) as ParticleSystem;
+        bloodParticles = Instantiate(Resources.Load<ParticleSystem>("bloodParticle"+teamIndex)) as ParticleSystem;
+        bloodParticles.transform.parent = transform;
 
         soundManager = FindObjectOfType<SoundManager>();
     }
