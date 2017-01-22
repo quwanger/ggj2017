@@ -11,26 +11,26 @@ public class MainMenuEffects : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        playButton.transform.Translate(-1000, 0, 0);
-        optionsButton.transform.Translate(1000, 0, 0);
-        exitButton.transform.Translate(-1000, 0, 0);
+        //playButton.transform.Translate(-1000, 0, 0);
+        //optionsButton.transform.Translate(1000, 0, 0);
+        //exitButton.transform.Translate(-1000, 0, 0);
 }
 	
 	// Update is called once per frame
 	void Update () {
-        if (playButton.transform.position.x - canvas.transform.position.x < 0) {
-            playButton.transform.Translate(Vector3.right * 2000 * Time.deltaTime);
-        }
-        else {
-            if(optionsButton.transform.position.x - canvas.transform.position.x > 0) {
-                optionsButton.transform.Translate(Vector3.right * -2000 * Time.deltaTime);
-            }
-            else {
-                if (exitButton.transform.position.x - canvas.transform.position.x < 0){
-                    exitButton.transform.Translate(Vector3.right * 2000 * Time.deltaTime);
-                }
-            }
-        }
+        //if (playButton.transform.position.x - canvas.transform.position.x < 0) {
+        //    playButton.transform.Translate(Vector3.right * 2000 * Time.deltaTime);
+        //}
+        //else {
+        //    if(optionsButton.transform.position.x - canvas.transform.position.x > 0) {
+        //        optionsButton.transform.Translate(Vector3.right * -2000 * Time.deltaTime);
+        //    }
+        //    else {
+        //        if (exitButton.transform.position.x - canvas.transform.position.x < 0){
+        //            exitButton.transform.Translate(Vector3.right * 2000 * Time.deltaTime);
+        //        }
+        //    }
+        //}
         
                
 	}

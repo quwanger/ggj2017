@@ -84,8 +84,9 @@ public class PlayerAssignment : MonoBehaviour {
                     
                     player1Index = i;
                     pressStart1.SetActive(false);
-                    player1.SetActive(true);
-                    player1BG.SetActive(true);
+                    //player1.SetActive(true);
+                    player1.GetComponent<Animator>().SetTrigger("player1On");
+                    //player1BG.SetActive(true);
                     checkIfDone();
                 }
             }
@@ -102,8 +103,9 @@ public class PlayerAssignment : MonoBehaviour {
                         soundManager.PlaySound("F_Start");
                         player2Index = i;
                         pressStart2.SetActive(false);
-                        player2.SetActive(true);
-                        player2BG.SetActive(true);
+                        //player2.SetActive(true);
+                        player2.GetComponent<Animator>().SetTrigger("player2On");
+                        //player2BG.SetActive(true);
                         checkIfDone();
                     }
                 }
@@ -120,7 +122,8 @@ public class PlayerAssignment : MonoBehaviour {
 	private void checkIfDone() {
 
 		if(player1Index != 0 && player2Index != 0) {
-            versus.SetActive(true);
+            //versus.SetActive(true);
+            GetComponent<Animator>().SetTrigger("start");
             playerIndexes.player1Index = player1Index;
             playerIndexes.player2Index = player2Index;
 
