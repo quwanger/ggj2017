@@ -174,7 +174,7 @@ public class CharacterController : MonoBehaviour {
             chargeBar.enabled = false;
             charge.fillAmount = 0.0f;
 
-            currentWords[currentWords.Count - 1].Fire(projectileSpeed * chargeLevel);
+            currentWords[currentWords.Count - 1].Fire(projectileSpeed * (chargeLevel*0.4f));
             chargeLevel = 0;
         }
 
