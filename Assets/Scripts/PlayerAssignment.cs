@@ -47,6 +47,8 @@ public class PlayerAssignment : MonoBehaviour {
                 timer -= Time.deltaTime;
                 loadingImage.SetActive(true);
 
+                
+
                 if (timer < 0)
                 {
                     Debug.Log("timer at zero");
@@ -63,7 +65,7 @@ public class PlayerAssignment : MonoBehaviour {
 
             if (versusTimer > 1.0f)
             {
-                //soundManager.PlaySound("Versus");
+                soundManager.PlaySound("Versus");
                 player01Set = false;
             }
 
@@ -79,7 +81,7 @@ public class PlayerAssignment : MonoBehaviour {
 
                     soundManager.PlaySound("E_Win");
 
-                    player01Set = true;
+                    
                     
                     player1Index = i;
                     pressStart1.SetActive(false);
@@ -122,7 +124,11 @@ public class PlayerAssignment : MonoBehaviour {
 
 		if(player1Index != 0 && player2Index != 0) {
             //versus.SetActive(true);
+
+            player01Set = true;
+
             GetComponent<Animator>().SetTrigger("start");
+            
             playerIndexes.player1Index = player1Index;
             playerIndexes.player2Index = player2Index;
 
