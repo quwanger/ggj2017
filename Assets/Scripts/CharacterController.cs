@@ -30,6 +30,11 @@ public class CharacterController : MonoBehaviour {
     public float health;
     private float maxHealth;
     public Image healthBar;
+    public Sprite heroHit;
+    public Sprite heroNormal;
+    public Sprite heroWin;
+    public Sprite heroLose;
+    //private Sprite 
 
     //firing
     public float projectileSpeed = 100.0f;
@@ -49,12 +54,22 @@ public class CharacterController : MonoBehaviour {
     private Vector2 rightJoystick = Vector2.zero;
     
     //text & fonts
-    List<Font> fonts;
+    public List<Font> fonts;
+
+    // Sounds
+    private SoundManager soundManager;
 
     private bool gameOver;
 
+    public bool polite = false;
+    public string[] politeCharacters;
+
+    private ParticleSystem bloodParticles;
+
     // Use this for initialization
     void Start () {
+        SetPlayerIndex();
+
         currentWords = new List<Word>();
         charging = false;
         chargeBar.enabled = false;
@@ -63,10 +78,26 @@ public class CharacterController : MonoBehaviour {
         fonts.Add(Resources.Load<Font>(Path.Combine("Fonts", "murkybuzzDEMO")));
         fonts.Add(Resources.Load<Font>(Path.Combine("Fonts", "deathrattlebb_reg")));
         fonts.Add(Resources.Load<Font>(Path.Combine("Fonts", "Devastated")));
-        
+        fonts.Add(Resources.Load<Font>(Path.Combine("Fonts", "bouledoug DEMO")));
+
         maxHealth = health;
         gameOver = false;
-        
+
+        bloodParticles = Instantiate(Resources.Load<ParticleSystem>("bloodParticle"+teamIndex), transform, false) as ParticleSystem;
+
+        soundManager = FindObjectOfType<SoundManager>();
+    }
+
+
+    void SetPlayerIndex() {
+        PlayerIndexes pi = FindObjectOfType<PlayerIndexes>();
+        if (teamIndex == 0) {
+            playerIndex = pi.player1Index;
+        }
+        if (teamIndex == 1) {
+            playerIndex = pi.player2Index;
+        }
+        Destroy(pi.gameObject);
     }
 	
 	// Update is called once per frame
@@ -153,9 +184,13 @@ public class CharacterController : MonoBehaviour {
             }
             if(chargeAmount >= chargeLevel2) {
                 targetFont = fonts[2];
+                if (polite) {
+                    targetFont = fonts[3];
+                }
             }
             foreach (LetterProjectile letter in currentWords.Last().letters) {
                 letter.text.font = targetFont;
+                if (polite && targetFont == fonts[3]) letter.text.fontSize = 120;
                 //(letter.text.transform as RectTransform).localScale = Vector3.one * letterScaleTarget;
             }
 
@@ -174,7 +209,9 @@ public class CharacterController : MonoBehaviour {
             chargeBar.enabled = false;
             charge.fillAmount = 0.0f;
 
-            currentWords[currentWords.Count - 1].Fire(projectileSpeed * chargeLevel);
+            //currentWords[currentWords.Count - 1].Fire(projectileSpeed);
+            soundManager.PlaySound(currentWords.Last().word);
+            currentWords[currentWords.Count - 1].Fire(projectileSpeed * (chargeLevel*0.4f));
             chargeLevel = 0;
         }
 
@@ -236,6 +273,13 @@ public class CharacterController : MonoBehaviour {
         }
 
         wordToReturn = wordToReturn.Replace("_", " ");
+        if (polite) {
+            string censoredWord = "";
+            for(int i = 0; i < wordToReturn.Length; i++) {
+                censoredWord += politeCharacters[Random.Range(0, politeCharacters.Length)];
+            }
+            wordToReturn = censoredWord;
+        }
         return wordToReturn;
     }
 
@@ -259,7 +303,7 @@ public class CharacterController : MonoBehaviour {
             projectile.health = projectileLevel;
 
             //text
-            projectile.text.text = letter.ToString();
+            projectile.letter = letter.ToString();
 
             UpdateLetterTransform(projectile, count, word);
             
@@ -287,14 +331,12 @@ public class CharacterController : MonoBehaviour {
     public void Damage(float damage) {
         health -= damage;
 
-        Debug.Log(health);
-
         healthBar.fillAmount = health / maxHealth;
 
-        if (health <= 0) {
-            //other player wins!
-            //Destroy(gameObject);
+        bloodParticles.Emit(10);
+        bloodParticles.Stop();
 
+        if (health <= 0) {
             gameOver = true;
         }
     }

@@ -25,10 +25,12 @@ public class Word : MonoBehaviour {
         foreach(LetterProjectile letter in letters) {
             letter.GetComponent<Collider2D>().enabled = true;
             letter.GetComponent<Rigidbody2D>().AddForce(letter.transform.up * speed);
-            Vector3 pos = letter.transform.position;
-            letter.transform.parent = null;
-            letter.transform.position = pos;
+            Vector3 pos = letter.transform.position;//fix
+            letter.transform.parent = null;//for
+            letter.transform.position = pos; //a bug
             letter.active = true;
+            letter.text.color = new Color(letter.text.color.r, letter.text.color.g, letter.text.color.b, 1.0f);
+            letter.text.text = letter.letter;
         }
     }
 
