@@ -42,7 +42,7 @@ public class PlayerAssignment : MonoBehaviour {
         {
             timerSet += Time.deltaTime;
   
-            if (timerSet > 3.0f)
+            if (timerSet > 5.0f)
             {
                 timer -= Time.deltaTime;
                 loadingImage.SetActive(true);
