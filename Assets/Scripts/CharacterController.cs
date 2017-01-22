@@ -86,7 +86,7 @@ public class CharacterController : MonoBehaviour {
         maxHealth = health;
         gameOver = false;
 
-        bloodParticles = Instantiate(Resources.Load<ParticleSystem>("bloodParticle"+teamIndex), transform.position, Quaternion.identity) as ParticleSystem;
+        bloodParticles = Instantiate(Resources.Load<ParticleSystem>("bloodParticle"+teamIndex), Vector3.zero, Quaternion.identity) as ParticleSystem;
         bloodParticles.transform.SetParent(transform, false);
 
         soundManager = FindObjectOfType<SoundManager>();
@@ -425,5 +425,11 @@ public class CharacterController : MonoBehaviour {
     private void LoadMenu()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public float collisionForce = 100.0f;
+    public void OnCollisionEnter2D(Collision2D collision) {
+        Rigidbody2D hitBody = collision.transform.GetComponent<Rigidbody2D>();
+        hitBody.AddForce(GetComponent<Rigidbody2D>().velocity * collisionForce);
     }
 }

@@ -46,7 +46,6 @@ public class LetterProjectile : MonoBehaviour {
     public void Randomize() {
         text.text = word.owner.politeCharacters[(Random.Range(0, word.owner.politeCharacters.Length))];
         if (text.font == word.owner.fonts[2]) text.font = word.owner.fonts[3];
-        Debug.Log(text.font);
     }
 
     public void OnCollisionEnter2D(Collision2D collision) {
