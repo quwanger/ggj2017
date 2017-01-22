@@ -37,7 +37,7 @@ public class SoundManager : MonoBehaviour {
     public AudioClip[] cheers;
     public AudioClip[] collisions;
 
-    public GameObject player;
+    public GameObject audio;
 
     // Use this for initialization
     void Start () {
@@ -54,7 +54,7 @@ public class SoundManager : MonoBehaviour {
         switch (word)
         {
             case "FUCK":
-                player.GetComponent<AudioSource>().PlayOneShot(fuck[0]);
+                audio.GetComponent<AudioSource>().PlayOneShot(fuck[0]);
                 break; 
         }
     }

@@ -51,8 +51,8 @@ public class CharacterController : MonoBehaviour {
     //text & fonts
     List<Font> fonts;
 
-    // Sound
-    public SoundManager soundManager;
+    // Sounds
+    private SoundManager soundManager;
 
     private bool gameOver;
 
@@ -70,7 +70,7 @@ public class CharacterController : MonoBehaviour {
         maxHealth = health;
         gameOver = false;
 
-        soundManager = this.GetComponent<SoundManager>();
+        soundManager = FindObjectOfType<SoundManager>();
     }
 	
 	// Update is called once per frame
