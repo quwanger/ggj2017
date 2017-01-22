@@ -12,7 +12,7 @@ public class LetterProjectile : MonoBehaviour {
     public float life = 0.0f;
     public float timeout = 5.0f;
 
-    public int bounces;
+    public float health = 1;
 
 	// Use this for initialization
 	void Start () {
@@ -28,22 +28,27 @@ public class LetterProjectile : MonoBehaviour {
         if(active) {
             life += Time.deltaTime;
         }
-        if(life >= timeout || bounces <= 0) {
+        if(life >= timeout || health <= 0) {
             word.letters.Remove(this);
             Destroy(gameObject);
         }
     }
 
     public void OnCollisionEnter2D(Collision2D collision) {
-        
-        
+
         CharacterController cc = collision.collider.GetComponent<CharacterController>();
         if(cc != null && cc.teamIndex != word.owner.teamIndex) {
             cc.Damage(damage);
+            health = 0;
         }
 
-        if(collision.collider.GetComponent<LetterProjectile>() == null) {
-            bounces--;
+        LetterProjectile hitLetter = collision.collider.GetComponent<LetterProjectile>();
+        if(hitLetter != null && hitLetter.word.owner.teamIndex != word.owner.teamIndex) {
+            health--;
+        }
+
+        if (hitLetter == null) {
+            health--;
         }
     }
 }

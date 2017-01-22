@@ -35,9 +35,11 @@ public class CharacterController : MonoBehaviour {
     public float projectileSpeed = 100.0f;
     private bool charging;
     public float letterDistanceFromPlayer = 3.0f;
+    public float letterOffsetBackFromPlayer = 3.0f;
     public float letterAngleOfSeperation = 10.0f;
     public float letterScaleInitial = 1.0f;
     private float letterScaleTarget = 1.0f;
+    public float letterScaleMultiplier = 0.5f;
 
     public List<Word> currentWords;
     public int maximumAvailableWords = 3;
@@ -105,6 +107,7 @@ public class CharacterController : MonoBehaviour {
 
     private bool level1Reached = false;
     private bool level2Reached = false;
+    private int chargeLevel = 0;
 
     void Fire()
     {
@@ -113,22 +116,22 @@ public class CharacterController : MonoBehaviour {
         {
             timer += Time.deltaTime;
             float chargeAmount = Mathf.Clamp(timer / chargeSpeed, 0.0f, 1.0f);
-            
+            chargeLevel = (int)(chargeAmount * 2.0f) + 1;
             if (!charging) {
-                CreateWord(PickRandomWord((int)(chargeAmount * 2.0f) + 1));
+                CreateWord(PickRandomWord(chargeLevel), chargeLevel);
             } else if (chargeAmount >= chargeLevel1 && !level1Reached) {
                 Word w = currentWords.Last();
                 currentWords.Remove(currentWords.Last());
                 w.DestroyLetters();
                 Destroy(w.gameObject);
-                CreateWord(PickRandomWord((int)(chargeAmount * 2.0f) + 1));
+                CreateWord(PickRandomWord(chargeLevel), chargeLevel);
                 level1Reached = true;
             } else if (chargeAmount >= chargeLevel2 && !level2Reached) {
                 Word w = currentWords.Last();
                 currentWords.Remove(currentWords.Last());
                 w.DestroyLetters();
                 Destroy(w.gameObject);
-                CreateWord(PickRandomWord((int)(chargeAmount * 2.0f) + 1));
+                CreateWord(PickRandomWord(chargeLevel), chargeLevel);
                 level2Reached = true;
             }
 
@@ -149,12 +152,9 @@ public class CharacterController : MonoBehaviour {
 
             //swap fonts/scale text
             Font targetFont = fonts[0];
-            letterScaleTarget = letterScaleInitial + chargeAmount*0.5f;
+            letterScaleTarget = letterScaleInitial + chargeAmount * letterScaleMultiplier;
             if (chargeAmount >= chargeLevel1) {
                 targetFont = fonts[1];
-
-                charge.color = new Color32(255, 180, 65, 100);
-
             }
             if(chargeAmount >= chargeLevel2) {
                 targetFont = fonts[2];
@@ -179,8 +179,10 @@ public class CharacterController : MonoBehaviour {
             chargeBar.enabled = false;
             charge.fillAmount = 0.0f;
 
-            currentWords[currentWords.Count - 1].Fire(projectileSpeed);
+            //currentWords[currentWords.Count - 1].Fire(projectileSpeed);
             soundManager.PlaySound(currentWords.Last().word);
+            currentWords[currentWords.Count - 1].Fire(projectileSpeed * (chargeLevel*0.4f));
+            chargeLevel = 0;
         }
 
         if (charging)
@@ -203,15 +205,15 @@ public class CharacterController : MonoBehaviour {
                 switch (chargeLevel) {
                     case 1:
                         numOfAvailableWords = System.Enum.GetNames(typeof(EnglishWords.ShortWords)).Length;
-                        wordToReturn = ((EnglishWords.ShortWords)Random.Range(0, numOfAvailableWords)).ToString().ToUpper();
+                        wordToReturn = ((EnglishWords.ShortWords)Random.Range(0, numOfAvailableWords)).ToString();
                         break;
                     case 2:
                         numOfAvailableWords = System.Enum.GetNames(typeof(EnglishWords.MediumWords)).Length;
-                        wordToReturn = ((EnglishWords.MediumWords)Random.Range(0, numOfAvailableWords)).ToString().ToUpper();
+                        wordToReturn = ((EnglishWords.MediumWords)Random.Range(0, numOfAvailableWords)).ToString();
                         break;
                     case 3:
                         numOfAvailableWords = System.Enum.GetNames(typeof(EnglishWords.LongWords)).Length;
-                        wordToReturn = ((EnglishWords.LongWords)Random.Range(0, numOfAvailableWords)).ToString().ToUpper();
+                        wordToReturn = ((EnglishWords.LongWords)Random.Range(0, numOfAvailableWords)).ToString();
                         break;
                 }
             }
@@ -223,15 +225,15 @@ public class CharacterController : MonoBehaviour {
                 switch (chargeLevel) {
                     case 1:
                         numOfAvailableWords = System.Enum.GetNames(typeof(FrenchWords.ShortWords)).Length;
-                        wordToReturn = ((FrenchWords.ShortWords)Random.Range(0, numOfAvailableWords)).ToString().ToUpper();
+                        wordToReturn = ((FrenchWords.ShortWords)Random.Range(0, numOfAvailableWords)).ToString();
                         break;
                     case 2:
                         numOfAvailableWords = System.Enum.GetNames(typeof(FrenchWords.MediumWords)).Length;
-                        wordToReturn = ((FrenchWords.MediumWords)Random.Range(0, numOfAvailableWords)).ToString().ToUpper();
+                        wordToReturn = ((FrenchWords.MediumWords)Random.Range(0, numOfAvailableWords)).ToString();
                         break;
                     case 3:
                         numOfAvailableWords = System.Enum.GetNames(typeof(FrenchWords.LongWords)).Length;
-                        wordToReturn = ((FrenchWords.LongWords)Random.Range(0, numOfAvailableWords)).ToString().ToUpper();
+                        wordToReturn = ((FrenchWords.LongWords)Random.Range(0, numOfAvailableWords)).ToString();
                         break;
                 }
             }
@@ -244,7 +246,7 @@ public class CharacterController : MonoBehaviour {
         return wordToReturn;
     }
 
-    private void CreateWord(string word) {
+    private void CreateWord(string word, float projectileLevel) {
         char[] letters = word.ToCharArray();
         GameObject obj = (GameObject)Instantiate(new GameObject());
 
@@ -260,6 +262,9 @@ public class CharacterController : MonoBehaviour {
 
             //projectile.transform.SetParent(transform);
             projectile.word = currentWord;
+            projectile.damage = projectileLevel;
+            projectile.health = projectileLevel;
+
             //text
             projectile.text.text = letter.ToString();
 
@@ -280,7 +285,7 @@ public class CharacterController : MonoBehaviour {
         projectile.transform.rotation = Quaternion.Euler(0f, 0f, rot_z - rotationOffset);
 
         //position
-        projectile.transform.position = head.transform.position + projectile.transform.up * letterDistanceFromPlayer * letterScaleTarget;
+        projectile.transform.position = head.transform.position - head.transform.right * -letterOffsetBackFromPlayer + projectile.transform.up * letterDistanceFromPlayer * letterScaleTarget;
 
         //scale
         projectile.transform.localScale = Vector3.one * 0.01f * letterScaleTarget;

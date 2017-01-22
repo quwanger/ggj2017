@@ -5,13 +5,13 @@ using System.Text;
 
 
 public static class EnglishWords {
-    public enum ShortWords { Fuck, Shit, Damn, Jesus }
-    public enum MediumWords { Asshole, Dickhead, Fuckface }
-    public enum LongWords { Piece_of_Shit, Motherfucker, Son_of_a_Bitch }
+    public enum ShortWords { FUCK, SHIT, DAMN, JESUS }
+    public enum MediumWords { ASSHOLE, DICKHEAD, FUCKFACE }
+    public enum LongWords { PIECEofSHIT, MOTHERFUCKER, SONofaBITCH }
 }
 
 public static class FrenchWords {
-    public enum ShortWords { Criss, Merde, Esti }
-    public enum MediumWords { Ta_Gueule, Maudit, Calisse, Va_Chier }
-    public enum LongWords { Tabarnak }
+    public enum ShortWords { CRISS, MERDE, ESTI }
+    public enum MediumWords { TaGUEULE, MAUDIT, CALISSE, VaCHIER }
+    public enum LongWords { TABARNAK }
 }
