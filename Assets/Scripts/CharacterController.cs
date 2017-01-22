@@ -413,7 +413,7 @@ public class CharacterController : MonoBehaviour {
             heroNormal02.enabled = false;
         }
         
-
+    
         healthBar.fillAmount = health / maxHealth;
 
         bloodParticles.Emit(10);

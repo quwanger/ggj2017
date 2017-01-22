@@ -165,6 +165,9 @@ public class SoundManager : MonoBehaviour {
             case "Versus":
                 audio.GetComponent<AudioSource>().PlayOneShot(versus[Random.Range(0, versus.Length)]);
                 break;
+            case "Cheers":
+                audio.GetComponent<AudioSource>().PlayOneShot(cheers[Random.Range(0, cheers.Length)]);
+                break;
             default:
                 audio.GetComponent<AudioSource>().PlayOneShot(grunts[Random.Range(0, grunts.Length)]);
                 break;
