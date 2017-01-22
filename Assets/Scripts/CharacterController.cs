@@ -83,7 +83,7 @@ public class CharacterController : MonoBehaviour {
         maxHealth = health;
         gameOver = false;
 
-        bloodParticles = Instantiate(Resources.Load<ParticleSystem>("bloodParticle"+teamIndex), transform.position, Quaternion.identity) as ParticleSystem;
+        bloodParticles = Instantiate(Resources.Load<ParticleSystem>("bloodParticle"+teamIndex), Vector3.zero, Quaternion.identity) as ParticleSystem;
         bloodParticles.transform.SetParent(transform, false);
 
         soundManager = FindObjectOfType<SoundManager>();
@@ -213,6 +213,16 @@ public class CharacterController : MonoBehaviour {
 
             charging = true;
 
+            if (teamIndex == 0)
+            {
+                soundManager.PlaySound("E_Charge");
+            } else
+            {
+                soundManager.PlaySound("F_Charge");
+            }
+            
+
+
             float topAngle = Mathf.Clamp(chargeAmount * mouthAngle, 0.0f, 40.0f);
             float bottomAngle = Mathf.Clamp(chargeAmount * mouthAngle, 0.0f, 40.0f);
 
@@ -258,6 +268,7 @@ public class CharacterController : MonoBehaviour {
             charge.fillAmount = 0.0f;
 
             //Debug.Log(currentWords.Last().word);
+            soundManager.GetComponent<AudioSource>().Stop();
             soundManager.PlaySound(currentWords.Last().word);
             currentWords[currentWords.Count - 1].Fire(projectileSpeed * (chargeLevel*0.4f));
             chargeLevel = 0;
@@ -436,6 +447,7 @@ public class CharacterController : MonoBehaviour {
         SceneManager.LoadScene(0);
     }
 
+
     public void BackToMainMenu()
     {
         if (Input.GetButton("Player1Back"))
@@ -443,4 +455,11 @@ public class CharacterController : MonoBehaviour {
             SceneManager.LoadScene(0);
         }
     }
+
+    //public float collisionForce = 100.0f;
+    //public void OnCollisionEnter2D(Collision2D collision) {
+    //    Rigidbody2D hitBody = collision.transform.GetComponent<Rigidbody2D>();
+    //    hitBody.AddForce(GetComponent<Rigidbody2D>().velocity * collisionForce);
+    //}
+
 }
