@@ -45,7 +45,13 @@ public class SoundManager : MonoBehaviour {
     public AudioClip[] grunts;
     public AudioClip[] versus;
 
+		public AudioSource[] sources;
+	AudioSource soundEffects;
+	AudioSource charging;
+	AudioSource soundtrack;
+
     public GameObject audio;
+
 
     void Awake()
     {
@@ -63,7 +69,10 @@ public class SoundManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-
+		sources = GetComponents<AudioSource>();
+		charging = sources[0];
+		soundtrack = sources[1];
+		soundEffects = sources[2];
 	}
 	
 	// Update is called once per frame
@@ -76,100 +85,100 @@ public class SoundManager : MonoBehaviour {
         switch (word)
         {
             case "FUCK":
-                audio.GetComponent<AudioSource>().PlayOneShot(fuck[Random.Range(0, fuck.Length)]);
+                soundEffects.PlayOneShot(fuck[Random.Range(0, fuck.Length)]);
                 break;
             case "SHIT":
-                audio.GetComponent<AudioSource>().PlayOneShot(shit[Random.Range(0, shit.Length)]);
+                soundEffects.PlayOneShot(shit[Random.Range(0, shit.Length)]);
                 break;
             case "DAMN":
-                audio.GetComponent<AudioSource>().PlayOneShot(damn[Random.Range(0, damn.Length)]);
+                soundEffects.PlayOneShot(damn[Random.Range(0, damn.Length)]);
                 break;
             case "JESUS":
-                audio.GetComponent<AudioSource>().PlayOneShot(jesus[Random.Range(0, jesus.Length)]);
+                soundEffects.PlayOneShot(jesus[Random.Range(0, jesus.Length)]);
                 break;
             case "ASSHOLE":
-                audio.GetComponent<AudioSource>().PlayOneShot(asshole[Random.Range(0, asshole.Length)]);
+                soundEffects.PlayOneShot(asshole[Random.Range(0, asshole.Length)]);
                 break;
             case "DICKHEAD":
-                audio.GetComponent<AudioSource>().PlayOneShot(dickhead[Random.Range(0, dickhead.Length)]);
+                soundEffects.PlayOneShot(dickhead[Random.Range(0, dickhead.Length)]);
                 break;
             case "FUCKFACE":
-                audio.GetComponent<AudioSource>().PlayOneShot(fuckface[Random.Range(0, fuckface.Length)]);
+                soundEffects.PlayOneShot(fuckface[Random.Range(0, fuckface.Length)]);
                 break;
             case "PIECEofSHIT":
-                audio.GetComponent<AudioSource>().PlayOneShot(pieceofshit[Random.Range(0, pieceofshit.Length)]);
+                soundEffects.PlayOneShot(pieceofshit[Random.Range(0, pieceofshit.Length)]);
                 break;
             case "MOTHERFUCKER":
-                audio.GetComponent<AudioSource>().PlayOneShot(motherfucker[Random.Range(0, motherfucker.Length)]);
+                soundEffects.PlayOneShot(motherfucker[Random.Range(0, motherfucker.Length)]);
                 break;
             case "SONofaBITCH":
-                audio.GetComponent<AudioSource>().PlayOneShot(sonofabitch[Random.Range(0, sonofabitch.Length)]);
+                soundEffects.PlayOneShot(sonofabitch[Random.Range(0, sonofabitch.Length)]);
                 break;
             case "CRISS":
-                audio.GetComponent<AudioSource>().PlayOneShot(criss[Random.Range(0, criss.Length)]);
+                soundEffects.PlayOneShot(criss[Random.Range(0, criss.Length)]);
                 break;
             case "MERDE":
-                audio.GetComponent<AudioSource>().PlayOneShot(merde[Random.Range(0, merde.Length)]);
+                soundEffects.PlayOneShot(merde[Random.Range(0, merde.Length)]);
                 break;
             case "ESTI":
-                audio.GetComponent<AudioSource>().PlayOneShot(esti[Random.Range(0, esti.Length)]);
+                soundEffects.PlayOneShot(esti[Random.Range(0, esti.Length)]);
                 break;
             case "TaGUEULE":
-                audio.GetComponent<AudioSource>().PlayOneShot(tagueuele[Random.Range(0, tagueuele.Length)]);
+                soundEffects.PlayOneShot(tagueuele[Random.Range(0, tagueuele.Length)]);
                 break;
             case "MAUDIT":
-                audio.GetComponent<AudioSource>().PlayOneShot(maudit[Random.Range(0, maudit.Length)]);
+                soundEffects.PlayOneShot(maudit[Random.Range(0, maudit.Length)]);
                 break;
             case "CALISSE":
-                audio.GetComponent<AudioSource>().PlayOneShot(calisse[Random.Range(0, calisse.Length)]);
+                soundEffects.PlayOneShot(calisse[Random.Range(0, calisse.Length)]);
                 break;
             case "VaCHIER":
-                audio.GetComponent<AudioSource>().PlayOneShot(vachier[Random.Range(0, vachier.Length)]);
+                soundEffects.PlayOneShot(vachier[Random.Range(0, vachier.Length)]);
                 break;
             case "TABARNAK":
-                audio.GetComponent<AudioSource>().PlayOneShot(tabarnak[Random.Range(0, tabarnak.Length)]);
+                soundEffects.PlayOneShot(tabarnak[Random.Range(0, tabarnak.Length)]);
                 break;
             case "E_Hit":
-                audio.GetComponent<AudioSource>().PlayOneShot(englishHurt[Random.Range(0, englishHurt.Length)]);
+                soundEffects.PlayOneShot(englishHurt[Random.Range(0, englishHurt.Length)]);
                 break;
             case "F_Hit":
-                audio.GetComponent<AudioSource>().PlayOneShot(frenchHurt[Random.Range(0, frenchHurt.Length)]);
+                soundEffects.PlayOneShot(frenchHurt[Random.Range(0, frenchHurt.Length)]);
                 break;
             case "E_Lose":
-                audio.GetComponent<AudioSource>().PlayOneShot(englishDead[Random.Range(0, englishDead.Length)]);
+                soundEffects.PlayOneShot(englishDead[Random.Range(0, englishDead.Length)]);
                 break;
             case "F_Lose":
-                audio.GetComponent<AudioSource>().PlayOneShot(frenchDead[Random.Range(0, frenchDead.Length)]);
+                soundEffects.PlayOneShot(frenchDead[Random.Range(0, frenchDead.Length)]);
                 break;
             case "E_Win":
-                audio.GetComponent<AudioSource>().PlayOneShot(englishWin[Random.Range(0, englishWin.Length)]);
+                soundEffects.PlayOneShot(englishWin[Random.Range(0, englishWin.Length)]);
                 break;
             case "F_Win":
-                audio.GetComponent<AudioSource>().PlayOneShot(frenchWin[Random.Range(0, frenchWin.Length)]);
+                soundEffects.PlayOneShot(frenchWin[Random.Range(0, frenchWin.Length)]);
                 break;
             case "collisions":
-                audio.GetComponent<AudioSource>().PlayOneShot(collisions[Random.Range(0, collisions.Length)]);
+							soundEffects.PlayOneShot(collisions[Random.Range(0, collisions.Length)]);
                 break;
             case "E_Charge":
-                audio.GetComponent<AudioSource>().PlayOneShot(englishCharge[Random.Range(0, englishCharge.Length)], 0.6f);
+                charging.PlayOneShot(englishCharge[Random.Range(0, englishCharge.Length)], 0.6f);
                 break;
             case "F_Charge":
-                audio.GetComponent<AudioSource>().PlayOneShot(frenchCharge[Random.Range(0, frenchCharge.Length)], 0.6f);
+                soundEffects.PlayOneShot(frenchCharge[Random.Range(0, frenchCharge.Length)], 0.6f);
                 break;
             case "E_Start":
-                audio.GetComponent<AudioSource>().PlayOneShot(englishStart[Random.Range(0, englishStart.Length)]);
+                soundEffects.PlayOneShot(englishStart[Random.Range(0, englishStart.Length)]);
                 break;
             case "F_Start":
-                audio.GetComponent<AudioSource>().PlayOneShot(frenchStart[Random.Range(0, frenchStart.Length)]);
+                soundEffects.PlayOneShot(frenchStart[Random.Range(0, frenchStart.Length)]);
                 break;
             case "Versus":
-                audio.GetComponent<AudioSource>().PlayOneShot(versus[Random.Range(0, versus.Length)]);
+                soundEffects.PlayOneShot(versus[Random.Range(0, versus.Length)]);
                 break;
             case "Cheers":
-                audio.GetComponent<AudioSource>().PlayOneShot(cheers[Random.Range(0, cheers.Length)]);
+                soundEffects.PlayOneShot(cheers[Random.Range(0, cheers.Length)]);
                 break;
             default:
-                audio.GetComponent<AudioSource>().PlayOneShot(grunts[Random.Range(0, grunts.Length)]);
+                soundEffects.PlayOneShot(grunts[Random.Range(0, grunts.Length)]);
                 break;
         }
     }
