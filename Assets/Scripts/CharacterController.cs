@@ -282,8 +282,8 @@ public class CharacterController : MonoBehaviour {
             chargeBar.enabled = false;
             charge.fillAmount = 0.0f;
 
-            //Debug.Log(currentWords.Last().word);
-            soundManager.GetComponent<AudioSource>().Stop();
+			//Debug.Log(currentWords.Last().word);
+						soundManager.sources[0].Stop();
             soundManager.PlaySound(currentWords.Last().word);
             currentWords[currentWords.Count - 1].Fire(projectileSpeed * (chargeLevel*0.4f));
             StartCoroutine(FireVibrate());
